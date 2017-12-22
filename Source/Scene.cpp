@@ -6,11 +6,12 @@
 
 #include <iostream>
 
-float Scene::sceneSDF(const Vec3f &position) {
-    //std::cout << m_sphere.radius() << std::endl;
-    return position.normalize().len() - m_sphere.radius();
+Intersection Scene::sceneSDF(const Vec3f &position) {
+    return m_sphere.sdf(position);
 }
 
-Scene::Scene() : m_sphere(Vec3f(50.0, 0.0, 0.0), 0.5, Color{255, 255, 255}) {
+Scene::Scene()
+        : m_sphere(Vec3f(0.0, 0.0, 1.0), 0.5f, Material(1.0f, 1.0f, 0.2f, 0.2f, Color{1.0f, 1.0f, 1.0f}))
+{
 
 }

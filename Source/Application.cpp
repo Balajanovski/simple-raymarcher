@@ -6,9 +6,11 @@
 
 #include <stdexcept>
 
+
+
 Application::Application() {
-    m_screen = std::make_shared<Screen<int>>(0, 800, 0, 600);
-    m_camera = std::make_shared<Camera>(Vec3f(-0.9, 0, 0), m_screen);
+    m_screen = std::make_shared<Screen<int>>(0, 1000, 0, 1000);
+    m_camera = std::make_shared<Camera>(Vec3f(0.0f, 0.0f, -1.0f));
     m_scene = std::make_shared<Scene>();
     m_stream = std::make_shared<Screen_Stream>(m_screen, "Shaders/vertex.vert", "Shaders/fragment.frag");
     m_raymarcher = std::make_shared<Raymarcher>(m_scene, m_camera, m_stream, m_screen);
@@ -58,4 +60,5 @@ void Application::run_loop() {
         glfwPollEvents();
     }
      */
+
 }

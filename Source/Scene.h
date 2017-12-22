@@ -9,10 +9,11 @@
 
 #include "Geometry/Sphere.h"
 #include "Geometry/Vec3f.h"
+#include "Geometry/Intersection.h"
 
 class Scene {
 public:
-    float sceneSDF(const Vec3f& position);
+    Intersection sceneSDF(const Vec3f& position);
 
     Scene();
 private:

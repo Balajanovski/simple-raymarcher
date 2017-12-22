@@ -8,9 +8,11 @@
 #include <string>
 
 class Shader : public Util::NonCopyable {
+private:
+    GLuint m_ID; // The program ID
 public:
-    // The program ID
-    GLuint m_ID;
+    GLuint ID() { return m_ID; }
+
 
     // References counter
     std::shared_ptr<unsigned int> references;

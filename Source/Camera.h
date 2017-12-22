@@ -6,6 +6,7 @@
 #define SIMPLE_RAYTRACER_CAMERA_H
 
 #include <memory>
+#include <utility>
 
 #include "Screen.h"
 #include "Geometry/Vec3f.h"
@@ -13,13 +14,13 @@
 
 class Camera {
 public:
-    Camera(const Vec3f& camera_pos, const std::shared_ptr<Screen<int>>& grid);
+    Camera(const Vec3f& camera_pos);
 
-    Ray fire_ray(float x, float y);
+    Ray fire_ray(const std::pair<float, float>& coords);
+
+    Vec3f pos() const { return m_pos; }
 private:
     Vec3f m_pos;
-
-    std::shared_ptr<Screen<int>> m_grid;
 };
 
 #endif //SIMPLE_RAYTRACER_CAMERA_H

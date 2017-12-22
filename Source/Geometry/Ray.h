@@ -18,7 +18,7 @@ public:
     Vec3f origin_coord() const { return m_origin_coord; }
     Vec3f direction_unit_vec() const { return m_direction_unit_vec; }
 
-    Vec3f march(float dist); // Method to move the ray point along the ray by the distance
+    Vec3f march(float dist) const; // Method to move the ray point along the ray by the distance
 
 private:
     Vec3f m_origin_coord;

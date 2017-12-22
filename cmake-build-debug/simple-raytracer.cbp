@@ -102,6 +102,12 @@
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Color.h">
 			<Option target="simple-raytracer"/>
 		</Unit>
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Intersection.cpp">
+			<Option target="simple-raytracer"/>
+		</Unit>
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Intersection.h">
+			<Option target="simple-raytracer"/>
+		</Unit>
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Ray.cpp">
 			<Option target="simple-raytracer"/>
 		</Unit>
@@ -117,12 +123,6 @@
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Sphere.h">
 			<Option target="simple-raytracer"/>
 		</Unit>
-		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Triangle.cpp">
-			<Option target="simple-raytracer"/>
-		</Unit>
-		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Triangle.h">
-			<Option target="simple-raytracer"/>
-		</Unit>
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Vec3f.cpp">
 			<Option target="simple-raytracer"/>
 		</Unit>
@@ -133,6 +133,15 @@
 			<Option target="simple-raytracer"/>
 		</Unit>
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Includes/glad.c">
+			<Option target="simple-raytracer"/>
+		</Unit>
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Light.cpp">
+			<Option target="simple-raytracer"/>
+		</Unit>
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Light.h">
+			<Option target="simple-raytracer"/>
+		</Unit>
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Material.h">
 			<Option target="simple-raytracer"/>
 		</Unit>
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Pixel_Stream_Base.h">

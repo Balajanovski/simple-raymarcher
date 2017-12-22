@@ -12,16 +12,17 @@
 
 class Sphere : public SceneObject {
 public:
-    Sphere(const Vec3f& center, float radius, const Color& surface_color);
+    Sphere(const Vec3f& center, float radius, const Material& surface_material);
 
-    Vec3f center() { return m_center; }
-    float radius() { return m_radius; }
-    float radius2() { return m_radius2; }
-    Color surface_color() { return m_surface_color; }
+    Vec3f center()        const { return m_center;           }
+    float radius()        const { return m_radius;           }
+    float radius2()       const { return m_radius2;          }
+
+    virtual Intersection sdf(const Vec3f& position) override;
+
 private:
     Vec3f m_center;
     float m_radius, m_radius2; // The sphere's radius and radius^2
-    Color m_surface_color;
 };
 
 

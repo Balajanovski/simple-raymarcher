@@ -5,13 +5,19 @@
 #ifndef SIMPLE_RAYTRACER_SCENEOBJECT_H
 #define SIMPLE_RAYTRACER_SCENEOBJECT_H
 
-#include "Ray.h"
-#include "../Color.h"
+#include "../Material.h"
+#include "Intersection.h"
+#include "Vec3f.h"
 
 class SceneObject {
 public:
-    Color color;
+    SceneObject(const Material& material) : m_surface_material(material) { }
 
+    Material surface_material() const { return m_surface_material; }
+
+    virtual Intersection sdf(const Vec3f& position) = 0;
+private:
+    Material m_surface_material;
 };
 
 

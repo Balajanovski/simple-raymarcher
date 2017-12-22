@@ -8,13 +8,16 @@
 class Color {
 public:
     Color(float r, float g, float b);
-    Color() : m_r(0), m_g(0), m_b(0) { }
+    Color() { m_rgb[0] = m_rgb[1] = m_rgb[2] = 0; }
 
-    float r() const { return m_r; }
-    float g() const { return m_g; }
-    float b() const { return m_b; }
+    float r() const { return m_rgb[0]; }
+    float g() const { return m_rgb[1]; }
+    float b() const { return m_rgb[2]; }
+
+    void clamp_with_desaturation();
+    void clamp();
 private:
-    float m_r, m_g, m_b;
+    float m_rgb[3];
 };
 
 

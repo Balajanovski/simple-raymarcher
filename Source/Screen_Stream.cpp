@@ -19,6 +19,7 @@
 
 void Screen_Stream::generate_shaders(const std::string &vertex_shader_src, const std::string &frag_shader_src) {
     m_shader = std::make_shared<Shader>(vertex_shader_src.c_str(), frag_shader_src.c_str());
+    m_shader->use();
 }
 
 
@@ -39,6 +40,85 @@ Pixel_Stream_Base(screen_dimensions) {
                                        glViewport(0, 0, width, height);
                                    }
     );
+
+    // Clear buffer
+    glClearColor(0, 0, 0, 1.0f);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    assert(glGetError() == GL_NO_ERROR);
+
+    generate_shaders(vertex_shader_src, frag_shader_src);
+
+// Create VAO
+    glGenVertexArrays(1, &m_vao);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glBindVertexArray(m_vao);
+    assert(glGetError() == GL_NO_ERROR);
+
+// Create vertex and element buffers
+    const static GLfloat vertices[] = {
+            // Position   Tex-coords
+            -1.0f,  1.0f, 0.0f, 0.0f, // Top-left
+             1.0f,  1.0f, 1.0f, 0.0f, // Top-right
+             1.0f, -1.0f, 1.0f, 1.0f, // Bottom-right
+            -1.0f, -1.0f, 0.0f, 1.0f  // Bottom-left
+    };
+
+    glGenBuffers(1, &m_vbo);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    assert(glGetError() == GL_NO_ERROR);
+
+    const static GLuint elements[] = {
+            0, 1, 2,
+            2, 3, 0
+    };
+
+    glGenBuffers(1, &m_ebo);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+    assert(glGetError() == GL_NO_ERROR);
+
+// Set shader attributes
+    GLint pos_attrib = glGetAttribLocation(m_shader->ID(), "position");
+    assert(glGetError() == GL_NO_ERROR);
+
+    glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glEnableVertexAttribArray(pos_attrib);
+    assert(glGetError() == GL_NO_ERROR);
+
+    GLint tex_coord_attrib = glGetAttribLocation(m_shader->ID(), "tex_coord");
+    assert(glGetError() == GL_NO_ERROR);
+
+    glEnableVertexAttribArray(tex_coord_attrib);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glVertexAttribPointer(tex_coord_attrib, 2, GL_FLOAT, GL_FALSE,
+                          4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    assert(glGetError() == GL_NO_ERROR);
+
+// Generate texture
+    glGenTextures(1, &m_screen_tex);
+    assert(glGetError() == GL_NO_ERROR);
+
+// Bind the texture information
+    glActiveTexture(GL_TEXTURE0);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glBindTexture(GL_TEXTURE_2D, m_screen_tex);
+    m_shader->set_int("tex", 0);
 }
 
 
@@ -55,31 +135,31 @@ Screen_Stream::~Screen_Stream() {
 void Screen_Stream::flush() {
 
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    //assert(glGetError() != GL_NO_ERROR);
 
     // Reset texture
     glBindTexture(GL_TEXTURE_2D, m_screen_tex);
-    //assert(glGetError() != GL_NO_ERROR);
+    assert(glGetError() == GL_NO_ERROR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bounds->width(), bounds->height(), 0, GL_RGB, GL_BYTE, &get_buffer()[0]);
-    //assert(glGetError() != GL_NO_ERROR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bounds->width(), bounds->height(), 0, GL_RGB, GL_FLOAT, &get_buffer()[0]);
+    assert(glGetError() == GL_NO_ERROR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //assert(glGetError() != GL_NO_ERROR);
+    assert(glGetError() == GL_NO_ERROR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //assert(glGetError() != GL_NO_ERROR);
+    assert(glGetError() == GL_NO_ERROR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //assert(glGetError() != GL_NO_ERROR);
+    assert(glGetError() == GL_NO_ERROR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //assert(glGetError() != GL_NO_ERROR);
+    assert(glGetError() == GL_NO_ERROR);
+
+    glBindVertexArray(m_vao);
 
     // Draw rectangle
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    //assert(glGetError() != GL_NO_ERROR);
+    assert(glGetError() == GL_NO_ERROR);
 
     // Used to swap buffers here
 
@@ -96,10 +176,7 @@ bool Screen_Stream::should_window_close() const {
 }
 
 bool Screen_Stream::key_pressed(int key) const {
-    if(glfwGetKey(m_window, key) == GLFW_PRESS)
-        return true;
-
-    return false;
+    return (glfwGetKey(m_window, key) == GLFW_PRESS);
 }
 
 void Screen_Stream::set_window_should_close(bool value) {

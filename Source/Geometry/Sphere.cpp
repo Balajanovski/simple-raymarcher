@@ -4,4 +4,9 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(const Vec3f &center, float radius, const Color &surface_color) : m_center(center), m_radius(radius), m_radius2(radius * radius), m_surface_color(surface_color) { }
+Sphere::Sphere(const Vec3f &center, float radius, const Material& surface_material)
+        : m_center(center), m_radius(radius), m_radius2(radius * radius), SceneObject(surface_material) { }
+
+Intersection Sphere::sdf(const Vec3f &position) {
+    return Intersection(position.len() - radius(), surface_material());
+}
