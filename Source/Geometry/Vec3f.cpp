@@ -3,8 +3,13 @@
 //
 
 #include <cmath>
-#include <iostream>
 #include "Vec3f.h"
+
+Vec3f::Vec3f(float x, float y, float z) {
+    data[0] = x;
+    data[1] = y;
+    data[2] = z;
+}
 
 Vec3f Vec3f::operator+(const Vec3f &rhs) const {
     return Vec3f(x() + rhs.x(), y() + rhs.y(), z() + rhs.z());
@@ -18,12 +23,15 @@ Vec3f Vec3f::operator*(float k) const {
     return Vec3f(x() * k, y() * k, z() * k);
 }
 
+Vec3f Vec3f::operator*(const Vec3f &rhs) const {
+    return Vec3f(x() * rhs.x(), y() * rhs.y(), z() * rhs.z());
+}
+
 Vec3f Vec3f::operator/(float k) const {
     return Vec3f(x() / k, y() / k, z() / k);
 }
 
 float Vec3f::len() const {
-    //std::cout << "x: " << x() << " y: " << y() << " z: " << z() << " len: " << sqrtf((x() * x()) + (y() * y()) + (z() * z())) << std::endl;
     return sqrtf(dot(*this));
 }
 
@@ -42,4 +50,8 @@ Vec3f Vec3f::cross(const Vec3f &rhs) const {
     return Vec3f(y() * rhs.z() - z() * rhs.y(),
                    z() * rhs.x() - x() * rhs.z(),
                    x() * rhs.y()- y() * rhs.x());
+}
+
+Vec3f Vec3f::reflect(const Vec3f &normal) const {
+    return *this - normal * 2 * (*this * normal);
 }

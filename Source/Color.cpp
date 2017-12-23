@@ -12,6 +12,63 @@ Color::Color(float r, float g, float b) {
     m_rgb[2] = b;
 }
 
+Color::Color(const Vec3f &vector) {
+    m_rgb[0] = vector.x();
+    m_rgb[1] = vector.y();
+    m_rgb[2] = vector.z();
+}
+
+Color Color::operator+(const Color &rhs) const {
+    return Color(r() + rhs.r(), g() + rhs.g(), b() + rhs.b());
+}
+
+Color Color::operator-(const Color &rhs) const {
+    return Color(r() - rhs.r(), g() - rhs.g(), b() - rhs.b());
+}
+
+Color Color::operator*(float k) const {
+    return Color(r() * k, g() * k, b() * k);
+}
+
+Color Color::operator*(const Color &rhs) const {
+    return Color(r() * rhs.r(), g() * rhs.g(), b() * rhs.b());
+}
+
+Color Color::operator/(float k) const {
+    return Color(r() / k, g() / k, b() / k);
+}
+
+void Color::operator+=(const Color &rhs) {
+    *this = *this + rhs;
+}
+
+void Color::operator-=(const Color &rhs) {
+    *this = *this - rhs;
+}
+
+void Color::operator*=(float k) {
+    *this = *this * k;
+}
+
+void Color::operator*=(const Color &rhs) {
+    *this = *this * rhs;
+}
+
+void Color::operator/=(float k) {
+    *this = *this / k;
+}
+
+
+float Color::dot(const Color &rhs) const {
+    return (r() * rhs.r()) + (g() * rhs.g()) + (b() * rhs.b());
+}
+
+Color Color::cross(const Color &rhs) const {
+    return Color(g() * rhs.b() - b() * rhs.g(),
+                 b() * rhs.r() - r() * rhs.b(),
+                 r() * rhs.g()- g() * rhs.r());
+}
+
 inline float clamp_value(float value) {
     value = (value < 0.0f) ? 0.0f : value;
     value = (value > 1.0f) ? 1.0f : value;
@@ -63,3 +120,4 @@ void Color::clamp_with_desaturation() {
     }
 
 }
+

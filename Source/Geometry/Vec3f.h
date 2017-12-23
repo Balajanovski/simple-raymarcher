@@ -7,24 +7,26 @@
 
 class Vec3f {
 public:
-    Vec3f(float x, float y, float z) : m_x(x), m_y(y), m_z(z) { }
-    Vec3f() : m_x(0), m_y(0), m_z(0) { }
+    Vec3f(float x, float y, float z);
+    Vec3f() { data[0] = data[1] = data[2] = 0.0f; }
 
-    float x() const { return m_x; }
-    float y() const { return m_y; }
-    float z() const { return m_z; }
+    float x() const { return data[0]; }
+    float y() const { return data[1]; }
+    float z() const { return data[2]; }
 
     Vec3f operator+(const Vec3f& rhs) const;
     Vec3f operator-(const Vec3f& rhs) const;
     Vec3f operator*(float k) const;
+    Vec3f operator*(const Vec3f& rhs) const;
     Vec3f operator/(float k) const;
 
     float len() const;
     Vec3f normalize() const;
     float dot(const Vec3f& rhs) const;
     Vec3f cross(const Vec3f& rhs ) const;
+    Vec3f reflect(const Vec3f& normal) const;
 private:
-    float m_x, m_y, m_z;
+    float data[3];
 };
 
 

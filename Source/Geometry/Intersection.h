@@ -6,6 +6,7 @@
 #define SIMPLE_RAYTRACER_INTERSECTION_H
 
 #include "../Material.h"
+#include "Vec3f.h"
 
 // This class is what is returned by the scene sdf
 // It is a combination of the distance from the closest
@@ -13,14 +14,19 @@
 
 class Intersection {
 public:
-    Intersection(float distance, const Material& material) : m_distance(distance), m_material(material) { }
+    Intersection(float distance, const Material& material, const Vec3f& pos)
+            : m_distance(distance), m_material(material), m_intersection_pos(pos) { }
 
-    float distance()    const { return m_distance; }
+    float    distance() const { return m_distance; }
     Material material() const { return m_material; }
+    Vec3f    pos()      const { return m_intersection_pos; }
 private:
     float    m_distance;
     Material m_material;
+    Vec3f    m_intersection_pos;
 };
 
+Intersection min(Intersection a, Intersection b);
+Intersection max(Intersection a, Intersection b);
 
 #endif //SIMPLE_RAYTRACER_INTERSECTION_H

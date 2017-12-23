@@ -129,10 +129,16 @@
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Vec3f.h">
 			<Option target="simple-raytracer"/>
 		</Unit>
-		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Includes/GetGL.h">
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Vec4f.cpp">
+			<Option target="simple-raytracer"/>
+		</Unit>
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Geometry/Vec4f.h">
 			<Option target="simple-raytracer"/>
 		</Unit>
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Includes/glad.c">
+			<Option target="simple-raytracer"/>
+		</Unit>
+		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Includes/glad.h">
 			<Option target="simple-raytracer"/>
 		</Unit>
 		<Unit filename="/Users/MrIggyman1234/ClionProjects/simple-raytracer/Source/Light.cpp">

@@ -13,24 +13,24 @@ public:
         : m_specular(specular), m_diffuse(diffuse), m_ambient(ambient), m_shininess(shininess), m_color(color) { }
 
     Material(const Material& other)
-            : m_specular(other.specular()), m_diffuse(other.diffuse()),
-              m_ambient(other.ambient())  , m_shininess(other.shininess()), m_color(other.color()) { }
+            : m_specular(other.m_specular), m_diffuse(other.m_diffuse),
+              m_ambient(other.m_ambient)  , m_shininess(other.m_shininess), m_color(other.color()) { }
 
     Material operator=(const Material& rhs) {
-        m_specular  = rhs.specular();
-        m_diffuse   = rhs.diffuse();
-        m_ambient   = rhs.ambient();
-        m_shininess = rhs.shininess();
+        m_specular  = rhs.m_specular;
+        m_diffuse   = rhs.m_diffuse;
+        m_ambient   = rhs.m_ambient;
+        m_shininess = rhs.m_shininess;
         m_color     = rhs.color();
 
         return *this;
     }
 
     // Getters
-    float specular()  const { return m_specular;  }
-    float diffuse()   const { return m_diffuse;   }
-    float ambient()   const { return m_ambient;   }
-    float shininess() const { return m_shininess; }
+    Color specular()  const { return Vec3f(1.0f, 1.0f, 1.0f) * m_specular;  }
+    Color diffuse()   const { return m_color * m_diffuse;   }
+    Color ambient()   const { return m_color * m_ambient;   }
+    Color shininess() const { return Vec3f(1.0f, 1.0f, 1.0f) * m_shininess; }
     Color color()     const { return m_color;     }
 
 private:

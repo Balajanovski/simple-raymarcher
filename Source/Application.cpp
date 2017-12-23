@@ -2,8 +2,6 @@
 
 #include "Util/Shader.h"
 
-#include <glad/glad.h>
-
 #include <stdexcept>
 
 
