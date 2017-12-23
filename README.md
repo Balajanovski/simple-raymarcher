@@ -1,2 +1,2 @@
-# simple-raytracer
-A simple ray tracer which draws a sphere
+# simple-raymarcher
+A simple implementation of a raymarcher
