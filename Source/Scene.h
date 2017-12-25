@@ -22,6 +22,8 @@ public:
     Light get_light(int index) const { return m_lights[index]; }
     size_t get_num_of_lights() const { return m_lights.size(); }
 
+    void iterate(double ticks);
+
     Scene();
 private:
     std::vector<std::shared_ptr<SceneObject>> m_objects;

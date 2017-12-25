@@ -13,24 +13,24 @@
 #include "Geometry/Ray.h"
 #include "Util/NonCopyable.h"
 
-#include <memory>
 #include <utility>
 
-class Raymarcher : public Util::NonCopyable {
+class Raymarcher {
 public:
-    Raymarcher(const std::shared_ptr<Scene>& scene,
-               const std::shared_ptr<Camera>& camera,
-               const std::shared_ptr<Pixel_Stream_Base>& buffer,
-               const std::shared_ptr<Screen<int>>& grid)
+    Raymarcher(Scene* scene,
+               Camera* camera,
+               Pixel_Stream_Base* buffer,
+               Screen<int>* grid)
             : m_scene(scene), m_camera(camera), m_buffer(buffer), m_grid(grid) {
         epsilon = 2.0f / (m_grid->get_x_max() - m_grid->get_x_min());
     }
     void calculate_frame();
 private:
-    std::shared_ptr<Scene> m_scene;
-    std::shared_ptr<Camera> m_camera;
-    std::shared_ptr<Pixel_Stream_Base> m_buffer;
-    std::shared_ptr<Screen<int>> m_grid;
+
+    Scene* m_scene;
+    Camera* m_camera;
+    Pixel_Stream_Base* m_buffer;
+    Screen<int>* m_grid;
 
     Vec3f estimate_normal(Vec3f point);
 

@@ -24,7 +24,7 @@ void Screen_Stream::generate_shaders(const std::string &vertex_shader_src, const
 
 
 
-Screen_Stream::Screen_Stream(std::shared_ptr<Screen<int>>& screen_dimensions, const std::string& vertex_shader_src, const std::string& frag_shader_src) :
+Screen_Stream::Screen_Stream(Screen<int>* screen_dimensions, const std::string& vertex_shader_src, const std::string& frag_shader_src) :
 Pixel_Stream_Base(screen_dimensions) {
     init_glfw();
 
@@ -134,13 +134,11 @@ Screen_Stream::~Screen_Stream() {
 
 void Screen_Stream::flush() {
 
-
-
     // Reset texture
     glBindTexture(GL_TEXTURE_2D, m_screen_tex);
     assert(glGetError() == GL_NO_ERROR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bounds->width(), bounds->height(), 0, GL_RGB, GL_FLOAT, &get_buffer()[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_screen->width(), m_screen->height(), 0, GL_RGB, GL_FLOAT, &get_buffer()[0]);
     assert(glGetError() == GL_NO_ERROR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -161,14 +159,11 @@ void Screen_Stream::flush() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     assert(glGetError() == GL_NO_ERROR);
 
-    // Used to swap buffers here
-
     clear();
 }
 
 void Screen_Stream::clear() {
-    // Reset iterator
-    pos_iter = get_buffer().begin();
+    std::fill(get_buffer().begin(), get_buffer().end(), Color{0, 0, 0});
 }
 
 bool Screen_Stream::should_window_close() const {
@@ -176,7 +171,7 @@ bool Screen_Stream::should_window_close() const {
 }
 
 bool Screen_Stream::key_pressed(int key) const {
-    return (glfwGetKey(m_window, key) == GLFW_PRESS);
+    return (glfwGetKey(m_window, key) == GLFW_PRESS) || (glfwGetKey(m_window, key) == GLFW_REPEAT);
 }
 
 void Screen_Stream::set_window_should_close(bool value) {

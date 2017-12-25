@@ -10,9 +10,15 @@ public:
     Vec3f(float x, float y, float z);
     Vec3f() { data[0] = data[1] = data[2] = 0.0f; }
 
+    // Getters
     float x() const { return data[0]; }
     float y() const { return data[1]; }
     float z() const { return data[2]; }
+
+    // Setters
+    Vec3f set_x(float x) { data[0] = x; return *this; }
+    Vec3f set_y(float y) { data[1] = y; return *this; }
+    Vec3f set_z(float z) { data[2] = z; return *this; }
 
     Vec3f operator+(const Vec3f& rhs) const;
     Vec3f operator-(const Vec3f& rhs) const;

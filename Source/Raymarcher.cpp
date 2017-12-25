@@ -10,7 +10,7 @@
 #include "Color.h"
 
 #include <cmath>
-#include <algorithm>
+#include <iostream>
 
 const Material Raymarcher::BACKGROUND_MATERIAL = Material(0, 0, 0, 0, Color{0.0f, 0, 0});
 
@@ -62,8 +62,9 @@ std::pair<float, float> Raymarcher::convert_grid_coords_to_screen_space(int x, i
 }
 
 void Raymarcher::calculate_frame() {
-    //m_buffer->clear();
-    for (auto y = m_grid->get_y_min(); y < m_grid->get_y_max(); ++y) {
+    #pragma omp parallel for
+    for (int y = m_grid->get_y_min(); y < m_grid->get_y_max(); ++y) {
+        #pragma omp for
         for (auto x = m_grid->get_x_min(); x < m_grid->get_x_max(); ++x) {
             Ray view_dir = m_camera->fire_ray(convert_grid_coords_to_screen_space(x, y));
             Intersection intersection = march(view_dir);
@@ -72,7 +73,8 @@ void Raymarcher::calculate_frame() {
             if (intersection.distance() < MAX_RENDER_DISTANCE) {
                 Color pixel_color = Color{0, 0, 0};
 
-                int num_of_lights = m_scene->get_num_of_lights();
+                size_t num_of_lights = m_scene->get_num_of_lights();
+                #pragma omp for
                 for (int i = 0; i < num_of_lights; ++i) {
                     // Calculate ambient light
                     auto light = m_scene->get_light(i);
@@ -85,8 +87,6 @@ void Raymarcher::calculate_frame() {
                     Color diffuse = intersection.material().diffuse() * light.diffuse() * reflection_dp;
 
                     // Calculate specular light
-                    // TODO
-
                     Color specular;
                     Vec3f light_dir_normal = light.dir().normalize();
                     if (normal.dot(Vec3f(0, 0, 0) - light_dir_normal) >= 0.0) {
@@ -96,6 +96,7 @@ void Raymarcher::calculate_frame() {
                                    * powf(std::max(0.0f, shine_factor), intersection.material().shininess().r());
                     }
 
+                    // Attenuation factor
                     float attenuation = 1.0f / light.attenuation();
 
                     Color this_light_color = (ambient * attenuation + diffuse * attenuation + specular * attenuation);
@@ -104,14 +105,15 @@ void Raymarcher::calculate_frame() {
 
                 }
 
-                (*m_buffer) << std::move(pixel_color);
+                //printf("%d %d\n", x, y);
+                (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
+
             }
 
-            // Does not hit an object
+                // Does not hit an object
             else {
-                (*m_buffer) << BACKGROUND_MATERIAL.color();
+                (*m_buffer).add_to_buffer(x, y, BACKGROUND_MATERIAL.color());
             }
         }
     }
-
 }

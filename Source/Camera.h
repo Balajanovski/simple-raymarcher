@@ -19,6 +19,7 @@ public:
     Ray fire_ray(const std::pair<float, float>& coords);
 
     Vec3f pos() const { return m_pos; }
+    void set_pos(const Vec3f& pos) { m_pos = pos; }
 private:
     Vec3f m_pos;
 };

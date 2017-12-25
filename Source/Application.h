@@ -21,16 +21,16 @@ public:
     void run_loop();
 private:
 
-    std::shared_ptr<Screen_Stream> m_stream;
-    std::shared_ptr<Raymarcher> m_raymarcher;
-    std::shared_ptr<Scene> m_scene;
-    std::shared_ptr<Camera> m_camera;
-    std::shared_ptr<Screen<int>> m_screen;
+    Screen_Stream* m_stream;
+    Raymarcher* m_raymarcher;
+    Scene* m_scene;
+    Camera* m_camera;
+    Screen<int>* m_screen;
 
-    constexpr static int WINDOW_WIDTH = 800;
+    constexpr static int WINDOW_WIDTH  = 800;
     constexpr static int WINDOW_HEIGHT = 600;
     constexpr static int MS_PER_UPDATE = 2;
-
+    constexpr static int THREAD_NUMBER = 32;
 };
 
 

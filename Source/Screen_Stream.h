@@ -15,7 +15,7 @@
 
 class Screen_Stream : public Pixel_Stream_Base {
 public:
-    Screen_Stream(std::shared_ptr<Screen<int>>& screen_dimensions,
+    Screen_Stream(Screen<int>* screen_dimensions,
                   const std::string& vertex_shader_src,
                   const std::string& frag_shader_src);
     virtual ~Screen_Stream() override;

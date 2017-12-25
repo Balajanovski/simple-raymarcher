@@ -12,10 +12,10 @@ Camera::Camera(const Vec3f& camera_pos) : m_pos(camera_pos) { }
 Ray Camera::fire_ray(const std::pair<float, float>& coords) {
 
     if (coords.first < -1.0f || coords.first > 1.0f) {
-        throw std::runtime_error("x argument in Camera::fire_ray is outside the bounds of the grid");
+        throw std::runtime_error("x argument in Camera::fire_ray is outside the screen of the grid");
     }
     if (coords.second < -1.0f || coords.second > 1.0f) {
-        throw std::runtime_error("y argument in Camera::fire_ray is outside hte bounds of the grid");
+        throw std::runtime_error("y argument in Camera::fire_ray is outside hte screen of the grid");
     }
 
 
