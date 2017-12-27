@@ -5,7 +5,7 @@
 #ifndef SIMPLE_RAYTRACER_SCREEN_STREAM_H
 #define SIMPLE_RAYTRACER_SCREEN_STREAM_H
 
-#include "Pixel_Stream_Base.h"
+#include "PixelBufferBase.h"
 #include "Util/Shader.h"
 #include "Screen.h"
 
@@ -13,12 +13,12 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 
-class Screen_Stream : public Pixel_Stream_Base {
+class ScreenBuffer : public PixelBufferBase {
 public:
-    Screen_Stream(Screen<int>* screen_dimensions,
+    ScreenBuffer(Screen<int>* screen_dimensions,
                   const std::string& vertex_shader_src,
                   const std::string& frag_shader_src);
-    virtual ~Screen_Stream() override;
+    virtual ~ScreenBuffer() override;
 
     void make_current() {
         glfwMakeContextCurrent(m_window);

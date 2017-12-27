@@ -11,7 +11,7 @@
 #include "Color.h"
 #include "Screen.h"
 
-class Pixel_Stream_Base {
+class PixelBufferBase {
 private:
     // Stores the pixel data
     std::vector<Color> m_buffer;
@@ -25,9 +25,9 @@ protected:
     // Represents the size of the screen
     Screen<int>* m_screen;
 public:
-    Pixel_Stream_Base(Screen<int>* bnd) :
+    PixelBufferBase(Screen<int>* bnd) :
             m_buffer(bnd->size()), m_screen(bnd) { }
-    virtual ~Pixel_Stream_Base() { };
+    virtual ~PixelBufferBase() { };
     virtual void flush() = 0;
     virtual void clear() = 0;
 

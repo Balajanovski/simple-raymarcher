@@ -11,6 +11,12 @@ Vec3f::Vec3f(float x, float y, float z) {
     data[2] = z;
 }
 
+Vec3f::Vec3f(const Vec3f &other) {
+    data[0] = other.x();
+    data[1] = other.y();
+    data[2] = other.z();
+}
+
 Vec3f Vec3f::operator+(const Vec3f &rhs) const {
     return Vec3f(x() + rhs.x(), y() + rhs.y(), z() + rhs.z());
 }

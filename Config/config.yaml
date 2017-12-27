@@ -1,0 +1,25 @@
+camera: {X: 0.0, Y: 0.0, Z: -1.0}
+
+objects:
+  - type: Sphere
+    properties:
+      center: {X: 0.0, Y: 0.0, Z: 0.0}
+      material: {specular: 1.0, diffuse: 0.5, ambient: 0.2, shininess: 10.0, color: {R: 1.0, G: 0.0, B: 0.0}}
+      radius: 0.5
+  - type: Sphere
+    properties:
+      center: {X: -1.0, Y: 0.0, Z: 0.0}
+      material: {specular: 1.0, diffuse: 0.5, ambient: 0.2, shininess: 10.0, color: {R: 0.0, G: 1.0, B: 0.0}}
+      radius: 0.3
+
+lights:
+  - type: DirectionalLight
+    properties:
+      pos: {X: 3.0, Y: 0.0, Z: 3.0}
+      light_dir: {X: -1.0, Y: 0.0, Z: -1.0}
+      ambient: 0.5
+      diffuse: 0.8
+      specular: 1.0
+      attenuation: 0.9
+      intensity: 0.4
+      color: {R: 1.0, G: 1.0, B: 1.0}

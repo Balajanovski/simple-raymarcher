@@ -2,8 +2,8 @@
 // Created by Balajanovski on 15/12/2017.
 //
 
-#include "Screen_Stream.h"
-#include "Pixel_Stream_Base.h"
+#include "ScreenBuffer.h"
+#include "PixelBufferBase.h"
 
 #include <memory>
 #include <algorithm>
@@ -17,15 +17,15 @@
 #include <cassert>
 
 
-void Screen_Stream::generate_shaders(const std::string &vertex_shader_src, const std::string &frag_shader_src) {
+void ScreenBuffer::generate_shaders(const std::string &vertex_shader_src, const std::string &frag_shader_src) {
     m_shader = std::make_shared<Shader>(vertex_shader_src.c_str(), frag_shader_src.c_str());
     m_shader->use();
 }
 
 
 
-Screen_Stream::Screen_Stream(Screen<int>* screen_dimensions, const std::string& vertex_shader_src, const std::string& frag_shader_src) :
-Pixel_Stream_Base(screen_dimensions) {
+ScreenBuffer::ScreenBuffer(Screen<int>* screen_dimensions, const std::string& vertex_shader_src, const std::string& frag_shader_src) :
+PixelBufferBase(screen_dimensions) {
     init_glfw();
 
     m_window = create_glfw_window("Raymarcher", screen_dimensions->get_x_max() - screen_dimensions->get_x_min(), screen_dimensions->get_y_max() - screen_dimensions->get_y_min());
@@ -124,7 +124,7 @@ Pixel_Stream_Base(screen_dimensions) {
 
 
 
-Screen_Stream::~Screen_Stream() {
+ScreenBuffer::~ScreenBuffer() {
     glfwDestroyWindow(m_window);
     glfwTerminate();
 }
@@ -132,7 +132,7 @@ Screen_Stream::~Screen_Stream() {
 
 
 
-void Screen_Stream::flush() {
+void ScreenBuffer::flush() {
 
     // Reset texture
     glBindTexture(GL_TEXTURE_2D, m_screen_tex);
@@ -162,31 +162,31 @@ void Screen_Stream::flush() {
     clear();
 }
 
-void Screen_Stream::clear() {
+void ScreenBuffer::clear() {
     std::fill(get_buffer().begin(), get_buffer().end(), Color{0, 0, 0});
 }
 
-bool Screen_Stream::should_window_close() const {
+bool ScreenBuffer::should_window_close() const {
     return glfwWindowShouldClose(m_window);
 }
 
-bool Screen_Stream::key_pressed(int key) const {
+bool ScreenBuffer::key_pressed(int key) const {
     return (glfwGetKey(m_window, key) == GLFW_PRESS) || (glfwGetKey(m_window, key) == GLFW_REPEAT);
 }
 
-void Screen_Stream::set_window_should_close(bool value) {
+void ScreenBuffer::set_window_should_close(bool value) {
     glfwSetWindowShouldClose(m_window, value);
 }
 
-void Screen_Stream::swap_buffers() const {
+void ScreenBuffer::swap_buffers() const {
     glfwSwapBuffers(m_window);
 }
 
-void Screen_Stream::poll_events() const {
+void ScreenBuffer::poll_events() const {
     glfwPollEvents();
 }
 
-void Screen_Stream::init_glfw() {
+void ScreenBuffer::init_glfw() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -196,7 +196,7 @@ void Screen_Stream::init_glfw() {
 #endif
 }
 
-GLFWwindow* Screen_Stream::create_glfw_window(const std::string &window_title, int window_width, int window_height) {
+GLFWwindow* ScreenBuffer::create_glfw_window(const std::string &window_title, int window_width, int window_height) {
     GLFWwindow* window;
     window = glfwCreateWindow(window_width, window_height, window_title.c_str(), NULL, NULL);
     if (window == NULL) {
@@ -206,7 +206,7 @@ GLFWwindow* Screen_Stream::create_glfw_window(const std::string &window_title, i
     return window;
 }
 
-void Screen_Stream::init_glad() {
+void ScreenBuffer::init_glad() {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         throw std::runtime_error("Failed to initialize GLAD");
     }

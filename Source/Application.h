@@ -2,8 +2,8 @@
 #define OPENGL_BOILERPLATE_APPLICATION_H
 
 #include "Util/Shader.h"
-#include "Pixel_Stream_Base.h"
-#include "Screen_Stream.h"
+#include "PixelBufferBase.h"
+#include "ScreenBuffer.h"
 #include "Raymarcher.h"
 #include "Screen.h"
 #include "Scene.h"
@@ -21,10 +21,9 @@ public:
     void run_loop();
 private:
 
-    Screen_Stream* m_stream;
+    ScreenBuffer* m_stream;
     Raymarcher* m_raymarcher;
     Scene* m_scene;
-    Camera* m_camera;
     Screen<int>* m_screen;
 
     constexpr static int WINDOW_WIDTH  = 800;

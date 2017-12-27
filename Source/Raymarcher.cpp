@@ -8,12 +8,14 @@
 #include "Geometry/Vec4f.h"
 #include "Geometry/Ray.h"
 #include "Color.h"
+#include "Constants.h"
+#include "ConfigManager.h"
 
 #include <cmath>
 #include <iostream>
 
-const Material Raymarcher::BACKGROUND_MATERIAL = Material(0, 0, 0, 0, Color{0.0f, 0, 0});
-
+// Uses the gradient of the SDF to estimate the normal on the surface
+// Much more efficient than calculus
 Vec3f Raymarcher::estimate_normal(Vec3f point) {
 
     return (Vec3f(
@@ -35,7 +37,7 @@ Intersection Raymarcher::march(const Ray &ray) {
     float total    = 0.0f;
     for (int step = 0; step < MAX_MARCHING_STEPS; ++step) {
         scaled = ray.march(total);
-        position = m_camera->pos() + scaled;
+        position = ConfigManager::instance().get_camera()->pos() + scaled;
         auto intersection = m_scene->sceneSDF(position);
 
         total += intersection.distance();
@@ -46,8 +48,8 @@ Intersection Raymarcher::march(const Ray &ray) {
         }
 
         // Does not hit an object
-        if (intersection.distance() > MAX_RENDER_DISTANCE) {
-            return Intersection(MAX_RENDER_DISTANCE, BACKGROUND_MATERIAL, position);
+        if (intersection.distance() > Constants::MAX_RENDER_DISTANCE) {
+            return Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position);
         }
     }
 }
@@ -61,59 +63,66 @@ std::pair<float, float> Raymarcher::convert_grid_coords_to_screen_space(int x, i
     return screen_space_coords;
 }
 
+Color Raymarcher::phong_contrib_for_light(const Vec3f &diffuse, const Vec3f &specular, float alpha, const Vec3f &pos,
+                                          const Vec3f &eye, const LightBase& light) {
+    Vec3f N = estimate_normal(pos);
+    Vec3f L = light.light_vec();
+    Vec3f V = (eye - pos).normalize();
+    Vec3f R = (Vec3f(0.0f, 0.0f, 0.0f) - L).reflect(N);
+
+    float dotLN = L.dot(N);
+    float dotRV = R.dot(V);
+
+    if (dotLN < 0.0) {
+        // Light not visible
+        return Vec3f(0.0, 0.0, 0.0);
+    }
+
+    if (dotRV < 0.0) {
+        return light.intensity() * (diffuse * dotLN);
+    }
+    return light.intensity() * (diffuse * dotLN + specular * powf(dotRV, alpha));
+}
+
+Color Raymarcher::phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,
+                                     const Vec3f &eye) {
+    Color color = light.ambient() * material.ambient();
+
+    color += phong_contrib_for_light(material.diffuse().to_vector(), material.specular().to_vector(),
+                                     material.shininess(), pos, eye, light);
+
+    return color;
+}
+
 void Raymarcher::calculate_frame() {
     #pragma omp parallel for
     for (int y = m_grid->get_y_min(); y < m_grid->get_y_max(); ++y) {
         #pragma omp for
         for (auto x = m_grid->get_x_min(); x < m_grid->get_x_max(); ++x) {
-            Ray view_dir = m_camera->fire_ray(convert_grid_coords_to_screen_space(x, y));
+            Ray view_dir = ConfigManager::instance().get_camera()->fire_ray(convert_grid_coords_to_screen_space(x, y));
+
+            // March ray till an intersection is found
+            // If no intersection is found the BACKGROUND_MATERIAL is returned with the MAX_RENDER_DISTANCE
+            // These are declared in Constants.h
+
             Intersection intersection = march(view_dir);
 
-            // Hits an object
-            if (intersection.distance() < MAX_RENDER_DISTANCE) {
-                Color pixel_color = Color{0, 0, 0};
+            Color pixel_color = Color{0, 0, 0};
 
-                size_t num_of_lights = m_scene->get_num_of_lights();
-                #pragma omp for
-                for (int i = 0; i < num_of_lights; ++i) {
-                    // Calculate ambient light
-                    auto light = m_scene->get_light(i);
+            size_t num_of_lights = ConfigManager::instance().get_amount_of_lights();
+            #pragma omp for
+            for (int i = 0; i < num_of_lights; ++i) {
+                // Calculate ambient light
+                auto light = ConfigManager::instance().get_light(i);
 
-                    Color ambient = intersection.material().ambient() * light.ambient();
+                auto this_light_color = phong_illumination(intersection.material(), *light, intersection.pos(), ConfigManager::instance().get_camera()->pos());
 
-                    // Calculate diffuse light
-                    Vec3f normal = estimate_normal(intersection.pos());
-                    float reflection_dp = std::max(0.0f, normal.dot(light.dir()));
-                    Color diffuse = intersection.material().diffuse() * light.diffuse() * reflection_dp;
-
-                    // Calculate specular light
-                    Color specular;
-                    Vec3f light_dir_normal = light.dir().normalize();
-                    if (normal.dot(Vec3f(0, 0, 0) - light_dir_normal) >= 0.0) {
-                        Vec3f reflection_dir = light_dir_normal.reflect(normal);
-                        float shine_factor = reflection_dir.dot(view_dir.direction_unit_vec());
-                        specular = light.specular() * intersection.material().specular()
-                                   * powf(std::max(0.0f, shine_factor), intersection.material().shininess().r());
-                    }
-
-                    // Attenuation factor
-                    float attenuation = 1.0f / light.attenuation();
-
-                    Color this_light_color = (ambient * attenuation + diffuse * attenuation + specular * attenuation);
-                    this_light_color.clamp();
-                    pixel_color += this_light_color;
-
-                }
-
-                //printf("%d %d\n", x, y);
-                (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
+                pixel_color += this_light_color;
 
             }
 
-                // Does not hit an object
-            else {
-                (*m_buffer).add_to_buffer(x, y, BACKGROUND_MATERIAL.color());
-            }
+            (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
+
         }
     }
 }
