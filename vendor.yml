@@ -1,0 +1,5 @@
+# Vendored files and directories are excluded from language
+# statistics.
+
+- cmake
+- Source/Includes
