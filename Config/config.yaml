@@ -20,6 +20,5 @@ lights:
       ambient: 0.5
       diffuse: 0.8
       specular: 1.0
-      attenuation: 0.9
       intensity: 0.4
       color: {R: 1.0, G: 1.0, B: 1.0}

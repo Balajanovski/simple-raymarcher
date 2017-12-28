@@ -64,7 +64,7 @@ std::pair<float, float> Raymarcher::convert_grid_coords_to_screen_space(int x, i
 }
 
 Color Raymarcher::phong_contrib_for_light(const Vec3f &diffuse, const Vec3f &specular, float alpha, const Vec3f &pos,
-                                          const Vec3f &eye, const LightBase& light) {
+                                          const Vec3f &eye, const LightBase& light, float attenuation) {
     Vec3f N = estimate_normal(pos);
     Vec3f L = light.light_vec();
     Vec3f V = (eye - pos).normalize();
@@ -79,17 +79,19 @@ Color Raymarcher::phong_contrib_for_light(const Vec3f &diffuse, const Vec3f &spe
     }
 
     if (dotRV < 0.0) {
-        return light.intensity() * (diffuse * dotLN);
+        return (light.intensity() * (diffuse * dotLN)) * attenuation;
     }
-    return light.intensity() * (diffuse * dotLN + specular * powf(dotRV, alpha));
+    return (light.intensity() * (diffuse * dotLN + specular * powf(dotRV, alpha))) * attenuation;
 }
 
 Color Raymarcher::phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,
                                      const Vec3f &eye) {
-    Color color = light.ambient() * material.ambient();
+    float attenuation = 1.0f / light.attenuation();
+
+    Color color = (light.ambient() * material.ambient()) * attenuation;
 
     color += phong_contrib_for_light(material.diffuse().to_vector(), material.specular().to_vector(),
-                                     material.shininess(), pos, eye, light);
+                                     material.shininess(), pos, eye, light, attenuation);
 
     return color;
 }

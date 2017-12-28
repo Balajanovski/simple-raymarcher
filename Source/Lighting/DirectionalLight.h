@@ -8,11 +8,12 @@
 #include "LightBase.h"
 #include "../Geometry/Vec3f.h"
 
+// Directional lights don't have attenuation so set it as 1.0f which makes the light not attenuate
 class DirectionalLight : public LightBase {
 public:
     DirectionalLight(const Vec3f& pos, const Vec3f& light_dir, float ambient,
-                     float diffuse, float specular, float intensity, float attenuation, Color color)
-            : LightBase(pos, ambient, diffuse, specular, intensity, attenuation, color), m_light_direction(light_dir) { }
+                     float diffuse, float specular, float intensity, Color color)
+            : LightBase(pos, ambient, diffuse, specular, intensity, 1.0f, color), m_light_direction(light_dir) { }
     DirectionalLight() = default;
 
     virtual Vec3f light_vec() const override { return m_light_direction; }

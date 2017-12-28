@@ -48,7 +48,6 @@ void ConfigManager::load_file(const std::string &file_src) {
                                                                   properties["diffuse"].as<float>(),
                                                                   properties["specular"].as<float>(),
                                                                   properties["intensity"].as<float>(),
-                                                                  properties["attenuation"].as<float>(),
                                                                   properties["color"].as<Color>()));
         }
         else {
