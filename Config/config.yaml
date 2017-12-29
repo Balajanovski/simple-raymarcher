@@ -1,3 +1,5 @@
+screen-width: 1000  # In pixels
+screen-height: 1000 # In pixels
 camera: {X: 0.0, Y: 0.0, Z: -1.0}
 
 objects:

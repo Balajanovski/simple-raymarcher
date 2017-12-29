@@ -23,6 +23,7 @@ public:
                std::shared_ptr<Screen<int>>& grid)
             : m_scene(scene), m_buffer(buffer), m_grid(grid) {
         epsilon = 2.0f / (m_grid->get_x_max() - m_grid->get_x_min());
+        //printf("%f\n",epsilon);
     }
     void calculate_frame();
 private:
@@ -41,7 +42,7 @@ private:
     Color phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,
                              const Vec3f &eye);
 
-    static constexpr int MAX_MARCHING_STEPS = 50;
+    static constexpr int MAX_MARCHING_STEPS = 64;
     float epsilon;
 };
 

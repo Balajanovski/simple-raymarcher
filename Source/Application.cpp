@@ -3,6 +3,7 @@
 #include "ScreenBuffer.h"
 #include "ImageBuffer.h"
 #include "Util/Shader.h"
+#include "ConfigManager.h"
 
 #include <stdexcept>
 #include <glfw/glfw3.h>
@@ -30,7 +31,8 @@ void initiate_opengl_mode(std::shared_ptr<PixelBufferBase>& pixel_buffer,
 Application::Application() {
     std::cout << "Running raymarcher created by Balajanovski..." << std::endl;
 
-    m_screen = std::make_shared<Screen<int>>(0, 1000, 0, 1000);
+    m_screen = std::make_shared<Screen<int>>(0, ConfigManager::instance().get_screen_width(),
+                                             0, ConfigManager::instance().get_screen_height());
     m_scene =  std::make_shared<Scene>();
 
 #if defined(GLFW_FOUND) && defined(OPENGL_FOUND) && defined(PNG_FOUND)

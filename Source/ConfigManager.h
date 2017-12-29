@@ -27,12 +27,18 @@ public:
 
     const std::shared_ptr<LightBase> get_light(int index) const;
     size_t get_amount_of_lights() const { validate_config("amount of lights"); return m_lights.size(); }
+
+    int get_screen_width() const { return m_screen_width; }
+    int get_screen_height() const { return m_screen_height; }
 private:
     std::vector<std::shared_ptr<SceneObject>> m_objects;
     std::vector<std::shared_ptr<LightBase>> m_lights;
     std::shared_ptr<Camera> m_camera;
 
     void validate_config(const std::string& field_accessed) const;
+
+    int m_screen_width;
+    int m_screen_height;
 
     bool m_config_loaded = false;
 };
