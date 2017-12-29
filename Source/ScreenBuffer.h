@@ -15,7 +15,7 @@
 
 class ScreenBuffer : public PixelBufferBase {
 public:
-    ScreenBuffer(Screen<int>* screen_dimensions,
+    ScreenBuffer(std::shared_ptr<Screen<int>>& screen_dimensions,
                   const std::string& vertex_shader_src,
                   const std::string& frag_shader_src);
     virtual ~ScreenBuffer() override;
@@ -25,14 +25,6 @@ public:
     }
 
     virtual void flush() override;
-    virtual void clear() override;
-
-    // Exposed GLFW functions
-    bool should_window_close() const;
-    bool key_pressed(int key) const;
-    void set_window_should_close(bool value);
-    void swap_buffers() const;
-    void poll_events() const;
 
     static void init_glfw();
     static GLFWwindow* create_glfw_window(const std::string &window_title, int window_width, int window_height);

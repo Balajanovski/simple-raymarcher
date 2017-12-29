@@ -24,24 +24,27 @@ void ScreenBuffer::generate_shaders(const std::string &vertex_shader_src, const 
 
 
 
-ScreenBuffer::ScreenBuffer(Screen<int>* screen_dimensions, const std::string& vertex_shader_src, const std::string& frag_shader_src) :
+ScreenBuffer::ScreenBuffer(std::shared_ptr<Screen<int>>& screen_dimensions, const std::string& vertex_shader_src,
+                           const std::string& frag_shader_src) :
 PixelBufferBase(screen_dimensions) {
     init_glfw();
 
-    m_window = create_glfw_window("Raymarcher", screen_dimensions->get_x_max() - screen_dimensions->get_x_min(), screen_dimensions->get_y_max() - screen_dimensions->get_y_min());
+    m_window = create_glfw_window("Raymarcher", screen_dimensions->get_x_max() - screen_dimensions->get_x_min(),
+                                  screen_dimensions->get_y_max() - screen_dimensions->get_y_min());
     glfwMakeContextCurrent(m_window);
 
     init_glad();
 
 // Set the viewport size and resize function
-    glViewport(0, 0, screen_dimensions->get_x_max() - screen_dimensions->get_x_min(), screen_dimensions->get_y_max() - screen_dimensions->get_y_min());
+    glViewport(0, 0, screen_dimensions->get_x_max() - screen_dimensions->get_x_min(),
+               screen_dimensions->get_y_max() - screen_dimensions->get_y_min());
     glfwSetFramebufferSizeCallback(m_window,
                                    [](GLFWwindow* window, int width, int height) {
                                        glViewport(0, 0, width, height);
                                    }
     );
 
-    // Clear buffer
+    // Clear GL color buffer
     glClearColor(0, 0, 0, 1.0f);
     assert(glGetError() == GL_NO_ERROR);
 
@@ -159,31 +162,14 @@ void ScreenBuffer::flush() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     assert(glGetError() == GL_NO_ERROR);
 
-    clear();
-}
-
-void ScreenBuffer::clear() {
-    std::fill(get_buffer().begin(), get_buffer().end(), Color{0, 0, 0});
-}
-
-bool ScreenBuffer::should_window_close() const {
-    return glfwWindowShouldClose(m_window);
-}
-
-bool ScreenBuffer::key_pressed(int key) const {
-    return (glfwGetKey(m_window, key) == GLFW_PRESS) || (glfwGetKey(m_window, key) == GLFW_REPEAT);
-}
-
-void ScreenBuffer::set_window_should_close(bool value) {
-    glfwSetWindowShouldClose(m_window, value);
-}
-
-void ScreenBuffer::swap_buffers() const {
     glfwSwapBuffers(m_window);
-}
 
-void ScreenBuffer::poll_events() const {
-    glfwPollEvents();
+    while (!glfwWindowShouldClose(m_window)) {
+        if ((glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) || (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_REPEAT)) {
+            glfwSetWindowShouldClose(m_window, true);
+        }
+        glfwPollEvents();
+    }
 }
 
 void ScreenBuffer::init_glfw() {

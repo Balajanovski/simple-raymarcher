@@ -3,7 +3,6 @@
 
 #include "Util/Shader.h"
 #include "PixelBufferBase.h"
-#include "ScreenBuffer.h"
 #include "Raymarcher.h"
 #include "Screen.h"
 #include "Scene.h"
@@ -21,15 +20,11 @@ public:
     void run_loop();
 private:
 
-    ScreenBuffer* m_stream;
-    Raymarcher* m_raymarcher;
-    Scene* m_scene;
-    Screen<int>* m_screen;
 
-    constexpr static int WINDOW_WIDTH  = 800;
-    constexpr static int WINDOW_HEIGHT = 600;
-    constexpr static int MS_PER_UPDATE = 2;
-    constexpr static int THREAD_NUMBER = 32;
+    std::shared_ptr<Raymarcher> m_raymarcher;
+    std::shared_ptr<PixelBufferBase> m_stream;
+    std::shared_ptr<Scene> m_scene;
+    std::shared_ptr<Screen<int>> m_screen;
 };
 
 

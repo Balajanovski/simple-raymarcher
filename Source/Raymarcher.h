@@ -18,18 +18,18 @@
 
 class Raymarcher {
 public:
-    Raymarcher(Scene* scene,
-               PixelBufferBase* buffer,
-               Screen<int>* grid)
+    Raymarcher(std::shared_ptr<Scene>& scene,
+               std::shared_ptr<PixelBufferBase>& buffer,
+               std::shared_ptr<Screen<int>>& grid)
             : m_scene(scene), m_buffer(buffer), m_grid(grid) {
         epsilon = 2.0f / (m_grid->get_x_max() - m_grid->get_x_min());
     }
     void calculate_frame();
 private:
 
-    Scene* m_scene;
-    PixelBufferBase* m_buffer;
-    Screen<int>* m_grid;
+    std::shared_ptr<Scene> m_scene;
+    std::shared_ptr<PixelBufferBase> m_buffer;
+    std::shared_ptr<Screen<int>> m_grid;
 
     Vec3f estimate_normal(Vec3f point);
 
