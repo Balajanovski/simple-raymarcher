@@ -72,7 +72,7 @@ const std::shared_ptr<SceneObject> ConfigManager::get_object(int index) const {
 const std::shared_ptr<LightBase> ConfigManager::get_light(int index) const {
     validate_config("lights");
 
-    if (index < 0 || index >= m_objects.size()) {
+    if (index < 0 || index >= m_lights.size()) {
         throw std::runtime_error("error: in ConfigManager::get_light, attempt to access object out of range"
                                          "\naccessing index: " + std::to_string(index));
     }

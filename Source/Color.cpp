@@ -78,7 +78,7 @@ inline float clamp_value(float value) {
 
 inline double calculate_luma(float *rgb)
 {
-    return rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114;
+    return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
 }
 
 void Color::clamp() {
@@ -98,7 +98,7 @@ void Color::clamp_with_desaturation() {
         return;
     }
 
-    if (luma < 1.0) {
+    if (luma < 0.0) {
         m_rgb[0] = m_rgb[1] = m_rgb[2] = 0.0;
         return;
     }

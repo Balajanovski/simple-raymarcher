@@ -123,6 +123,7 @@ void Raymarcher::calculate_frame() {
 
             }
 
+            pixel_color.clamp_with_desaturation();
             (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
 
         }
