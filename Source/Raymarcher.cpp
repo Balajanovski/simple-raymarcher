@@ -52,6 +52,8 @@ Intersection&& Raymarcher::march(const Ray &ray) {
             return std::move(Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position));
         }
     }
+
+    return std::move(Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position));
 }
 
 std::pair<float, float> Raymarcher::convert_grid_coords_to_screen_space(int x, int y) {

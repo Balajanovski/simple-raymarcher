@@ -8,8 +8,6 @@
 #include "Scene.h"
 #include "Camera.h"
 
-#include <GLFW/glfw3.h>
-
 #include <memory>
 #include <string>
 
