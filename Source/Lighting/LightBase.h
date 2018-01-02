@@ -21,16 +21,20 @@ public:
     Vec3f pos() const { return m_pos; }
     void set_pos(const Vec3f& pos) { m_pos = pos; }
 
-    Color ambient() const { return m_color * m_ambient; }
+    Color&& ambient() const { return std::move(m_color * m_ambient); }
     void set_ambient(float amb) { m_ambient = amb; }
 
-    Color diffuse() const { return m_color * m_diffuse; }
+    Color&& diffuse() const { return std::move(m_color * m_diffuse); }
     void set_diffuse(float diffuse) { m_diffuse = diffuse; }
 
-    Color specular() const { return m_color * m_specular; }
+    Color&& specular() const { return std::move(m_color * m_specular); }
     void set_specular(float specular) { m_specular = specular; }
 
-    Color intensity() const { return Color(m_intensity, m_intensity, m_intensity); }
+    Color&& intensity() const {
+        Color intensity = Color(m_intensity, m_intensity, m_intensity);
+        return std::move(intensity);
+    }
+
     void set_intensity(float intensity) { m_intensity = intensity; }
 
     Color color() const { return m_color; }

@@ -16,9 +16,9 @@
 
 // Uses the gradient of the SDF to estimate the normal on the surface
 // Much more efficient than calculus
-Vec3f Raymarcher::estimate_normal(Vec3f point) {
+Vec3f&& Raymarcher::estimate_normal(Vec3f point) {
 
-    return (Vec3f(
+    return std::move((Vec3f(
             m_scene->sceneSDF(Vec3f(point.x() + epsilon, point.y(), point.z())).distance() -
                     m_scene->sceneSDF(Vec3f(point.x() - epsilon, point.y(), point.z())).distance(),
 
@@ -27,7 +27,7 @@ Vec3f Raymarcher::estimate_normal(Vec3f point) {
 
             m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z()  + epsilon)).distance() -
                     m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() - epsilon)).distance()
-    )).normalize();
+    )).normalize());
 }
 
 Intersection&& Raymarcher::march(const Ray &ray) {
@@ -65,7 +65,7 @@ std::pair<float, float> Raymarcher::convert_grid_coords_to_screen_space(int x, i
     return screen_space_coords;
 }
 
-Color&& Raymarcher::phong_contrib_for_light(const Vec3f &diffuse, const Vec3f &specular, float alpha, const Vec3f &pos,
+Color&& Raymarcher::phong_contrib_for_light(const Color& diffuse, const Color &specular, float alpha, const Vec3f &pos,
                                           const Vec3f &eye, const LightBase& light, float attenuation) {
     Vec3f N = estimate_normal(pos);
     Vec3f L = light.light_vec();
@@ -93,7 +93,7 @@ Color&& Raymarcher::phong_illumination(const Material& material, const LightBase
 
     Color color = (light.ambient() * material.ambient()) * attenuation;
 
-    color += phong_contrib_for_light(material.diffuse().to_vector(), material.specular().to_vector(),
+    color += phong_contrib_for_light(material.diffuse(), material.specular(),
                                      material.shininess(), pos, eye, light, attenuation);
 
     return std::move(color);
