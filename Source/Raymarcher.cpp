@@ -44,12 +44,12 @@ Intersection&& Raymarcher::march(const Ray &ray) {
 
         // Hits an object
         if (intersection.distance() < epsilon) {
-            return Intersection(total, intersection.material(), position);
+            return std::move(Intersection(total, intersection.material(), position));
         }
 
         // Does not hit an object
         if (intersection.distance() > Constants::MAX_RENDER_DISTANCE) {
-            return Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position);
+            return std::move(Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position));
         }
     }
 }
@@ -75,13 +75,14 @@ Color&& Raymarcher::phong_contrib_for_light(const Vec3f &diffuse, const Vec3f &s
 
     if (dotLN < 0.0) {
         // Light not visible
-        return Vec3f(0.0, 0.0, 0.0);
+        Color black{0.0f, 0.0f, 0.0f};
+        return std::move(black);
     }
 
     if (dotRV < 0.0) {
-        return (light.intensity() * (diffuse * dotLN)) * attenuation;
+        return std::move((light.intensity() * (diffuse * dotLN)) * attenuation);
     }
-    return (light.intensity() * (diffuse * dotLN + specular * powf(dotRV, alpha))) * attenuation;
+    return std::move((light.intensity() * (diffuse * dotLN + specular * powf(dotRV, alpha))) * attenuation);
 }
 
 Color&& Raymarcher::phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,

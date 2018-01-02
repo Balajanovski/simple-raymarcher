@@ -9,5 +9,5 @@ Sphere::Sphere(const Vec3f &center, float radius, const Material& surface_materi
 
 Intersection&& Sphere::sdf(const Vec3f &position) const {
     Vec3f sample_point = position + center();
-    return Intersection(sample_point.len() - radius(), surface_material(), position);
+    return std::move(Intersection(sample_point.len() - radius(), surface_material(), position));
 }

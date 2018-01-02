@@ -32,7 +32,7 @@ public:
     Color specular()  const { return Vec3f(1.0f, 1.0f, 1.0f) * m_specular;  }
     Color diffuse()   const { return ambient() + (color() * m_diffuse);   }
     Color ambient()   const { return Vec3f(1.0f, 1.0f, 1.0f) * m_ambient;   }
-    float shininess() const { return m_shininess; }
+    float shininess()   const { return m_shininess; }
     Color color()     const { return m_color;     }
 
 private:

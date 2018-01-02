@@ -13,7 +13,7 @@ Intersection&& Box::sdf(const Vec3f& pos) const {
 
     Vec3f d = sample_vector - m_box_vector;
 
-    return Intersection(fminf(fmaxf(d.x(), fmaxf(d.y(), d.z())), 0.0f) + max(d, Vec3f(0, 0, 0)).len(),
+    return std::move(Intersection(fminf(fmaxf(d.x(), fmaxf(d.y(), d.z())), 0.0f) + max(d, Vec3f(0, 0, 0)).len(),
                         surface_material(),
-                        pos);
+                        pos));
 }
