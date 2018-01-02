@@ -100,9 +100,17 @@ void Raymarcher::calculate_frame() {
     Color pixel_color = Color{0, 0, 0};
     size_t num_of_lights = ConfigManager::instance().get_amount_of_lights();
 
-    for (int y = m_grid->get_y_min(); y < m_grid->get_y_max(); ++y) {
-        for (auto x = m_grid->get_x_min(); x < m_grid->get_x_max(); ++x) {
-            Ray view_dir = ConfigManager::instance().get_camera()->fire_ray(convert_grid_coords_to_screen_space(x, y));
+    int y_min = m_grid->get_y_min();
+    int y_max = m_grid->get_y_max();
+
+    int x_min = m_grid->get_x_min();
+    int x_max = m_grid->get_x_max();
+
+    auto& config_manager_instance = ConfigManager::instance();
+
+    for (int y = y_min; y < y_max; ++y) {
+        for (auto x = x_min; x < x_max; ++x) {
+            Ray view_dir = config_manager_instance.get_camera()->fire_ray(convert_grid_coords_to_screen_space(x, y));
 
             // March ray till an intersection is found
             // If no intersection is found the BACKGROUND_MATERIAL is returned with the MAX_RENDER_DISTANCE
@@ -116,9 +124,9 @@ void Raymarcher::calculate_frame() {
 
             for (int i = 0; i < num_of_lights; ++i) {
                 // Calculate ambient light
-                auto light = ConfigManager::instance().get_light(i);
+                auto light = config_manager_instance.get_light(i);
 
-                auto this_light_color = phong_illumination(intersection.material(), *light, intersection.pos(), ConfigManager::instance().get_camera()->pos());
+                auto this_light_color = phong_illumination(intersection.material(), *light, intersection.pos(), config_manager_instance.get_camera()->pos());
 
                 pixel_color += this_light_color;
 

@@ -45,10 +45,6 @@ public:
 
 private:
     float m_rgb[3];
-
-    static constexpr float Pr = 0.299;
-    static constexpr float Pg = 0.587;
-    static constexpr float Pb = 0.114;
 };
 
 namespace YAML {

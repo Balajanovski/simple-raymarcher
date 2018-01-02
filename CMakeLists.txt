@@ -17,7 +17,7 @@ if(GLFW_FOUND AND (GLFW_VERSION VERSION_EQUAL 3.0 OR GLFW_VERSION VERSION_GREATE
     add_definitions( -DGLFW_VERSION_3 )
 endif()
 
-find_package(OPENGL)
+find_package(OpenGL)
 if (OPENGL_FOUND)
     add_definitions( -DOPENGL_FOUND )
     message("- OpenGL Located")
@@ -33,7 +33,7 @@ else()
     message("- LibPNG not located\n->Image Mode Disabled")
 endif()
 
-find_package(YAMLCPP REQUIRED)
+find_package(YamlCpp REQUIRED)
 
 add_definitions(${PNG_DEFINITIONS})
 
