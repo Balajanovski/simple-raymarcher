@@ -61,3 +61,17 @@ Vec3f Vec3f::cross(const Vec3f &rhs) const {
 Vec3f Vec3f::reflect(const Vec3f &normal) const {
     return *this - normal * 2 * (*this * normal);
 }
+
+void Vec3f::make_positive() {
+    for (int i = 0; i < 3; ++i) {
+        data[i] = (data[i] < 0.0f) ? -data[i] : data[i];
+    }
+}
+
+Vec3f min(const Vec3f& lhs, const Vec3f& rhs) {
+    return Vec3f(fminf(lhs.x(), rhs.x()), fminf(lhs.y(), rhs.y()), fminf(lhs.z(), rhs.z()));
+}
+
+Vec3f max(const Vec3f& lhs, const Vec3f& rhs) {
+    return Vec3f(fmaxf(lhs.x(), rhs.x()), fmaxf(lhs.y(), rhs.y()), fmaxf(lhs.z(), rhs.z()));
+}

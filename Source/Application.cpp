@@ -88,4 +88,5 @@ void Application::run_loop() {
     m_raymarcher->calculate_frame();
     m_stream->flush();
 
+    std::cout << "Closing down..." << std::endl;
 }

@@ -34,6 +34,7 @@ public:
     float dot(const Vec3f& rhs) const;
     Vec3f cross(const Vec3f& rhs ) const;
     Vec3f reflect(const Vec3f& normal) const;
+    void make_positive();
 
 private:
     float data[3];
@@ -62,6 +63,8 @@ namespace YAML {
         }
     };
 }
+Vec3f min(const Vec3f& lhs, const Vec3f& rhs);
+Vec3f max(const Vec3f& lhs, const Vec3f& rhs);
 
 
 #endif //SIMPLE_RAYTRACER_VECTOR3_H

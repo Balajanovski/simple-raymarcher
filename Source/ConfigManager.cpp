@@ -5,6 +5,8 @@
 #include "ConfigManager.h"
 #include "Geometry/Vec3f.h"
 #include "Geometry/Sphere.h"
+#include "Geometry/Box.h"
+#include "Geometry/Plane.h"
 #include "Lighting/DirectionalLight.h"
 
 #include <yaml-cpp/yaml.h>
@@ -48,6 +50,25 @@ void ConfigManager::load_file(const std::string &file_src) {
             m_objects.push_back(std::make_shared<Sphere>(properties["center"].as<Vec3f>(),
                                                              properties["radius"].as<float>(),
                                                              properties["material"].as<Material>()));
+        }
+        else if (objects[i]["type"].as<std::string>() == "Plane") {
+            auto properties = objects[i]["properties"];
+            Vec3f vec3f_normal = properties["normal"].as<Vec3f>();
+            m_objects.push_back(std::make_shared<Plane>(Vec4f(vec3f_normal.x(),
+                                                                vec3f_normal.y(),
+                                                                vec3f_normal.z(),
+                                                                properties["offset"].as<float>()),
+                                                         properties["material"].as<Material>()));
+        }
+        else if (objects[i]["type"].as<std::string>() == "Box") {
+            auto properties = objects[i]["properties"];
+            float width   = properties["width"].as<float>();
+            float height  = properties["height"].as<float>();
+            float breadth = properties["breadth"].as<float>();
+
+            m_objects.push_back(std::make_shared<Box>(properties["center"].as<Vec3f>(),
+                                                      Vec3f(width / 2, height / 2, breadth / 2),
+                                                      properties["material"].as<Material>()));
         }
         else {
             throw std::runtime_error("config file syntax error: no such object type as " + objects[i]["type"].as<std::string>());

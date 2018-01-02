@@ -7,14 +7,15 @@
 
 #include "SceneObject.h"
 
+#include "Vec4f.h"
+
 class Plane : public SceneObject {
 public:
-    Plane(const Vec3f& normal, float w, const Material& material) :
-            SceneObject(material), m_normal(normal), m_w(w) { }
-    virtual Intersection sdf(const Vec3f& pos) { }
+    Plane(const Vec4f& normal, const Material& material) :
+            SceneObject(material), m_normal(normal.normalize()) { }
+    virtual Intersection sdf(const Vec3f& pos) const override;
 private:
-    Vec3f m_normal;
-    float m_w;
+    Vec4f m_normal;
 };
 
 

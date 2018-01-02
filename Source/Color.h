@@ -67,6 +67,11 @@ namespace YAML {
                 return false;
             }
 
+            if (node["R"].as<float>() > 1.0f || node["G"].as<float>() > 1.0f || node["B"].as<float>() > 1.0f ||
+                node["R"].as<float>() < 0.0f || node["G"].as<float>() < 0.0f || node["B"].as<float>() < 0.0f) {
+                throw std::runtime_error("config file syntax error: Color nodes must be between 0.0 and 1.0");
+            }
+
             rhs.set_r(node["R"].as<float>());
             rhs.set_g(node["G"].as<float>());
             rhs.set_b(node["B"].as<float>());

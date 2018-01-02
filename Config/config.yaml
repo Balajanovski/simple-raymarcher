@@ -1,11 +1,11 @@
-screen-width: 1000  # In pixels
-screen-height: 1000 # In pixels
+screen-width: 1024  # In pixels
+screen-height: 1024 # In pixels
 camera: {X: 0.0, Y: 0.0, Z: -1.0}
 
 objects:
   - type: Sphere
     properties:
-      center: {X: 0.0, Y: 0.0, Z: 0.0}
+      center: {X: 0.0, Y: 0.0, Z: -0.75}
       material: {specular: 0.7, diffuse: 0.5, ambient: 0.2, shininess: 10.0, color: {R: 1.0, G: 0.0, B: 0.0}}
       radius: 0.5
   - type: Sphere
@@ -13,6 +13,14 @@ objects:
       center: {X: -1.0, Y: 0.0, Z: 1.0}
       material: {specular: 0.7, diffuse: 0.5, ambient: 0.2, shininess: 2.0, color: {R: 0.0, G: 1.0, B: 0.0}}
       radius: 0.3
+  - type: Box
+    properties:
+      center: {X: 0.45, Y: 0.0, Z: 0.75}
+      width: 0.6
+      height: 0.5
+      breadth: 0.25
+      material: {specular: 0.5, diffuse: 0.7, ambient: 0.25, shininess: 2.0, color: {R: 1.0, G: 1.0, B: 0.0}}
+
 
 lights:
   - type: DirectionalLight
