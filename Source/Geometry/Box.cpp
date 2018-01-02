@@ -6,7 +6,7 @@
 
 #include <cmath>
 
-Intersection Box::sdf(const Vec3f& pos) const {
+Intersection&& Box::sdf(const Vec3f& pos) const {
 
     auto sample_vector = pos + m_center;
     sample_vector.make_positive();

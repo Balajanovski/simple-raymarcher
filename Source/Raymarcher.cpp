@@ -30,7 +30,7 @@ Vec3f Raymarcher::estimate_normal(Vec3f point) {
     )).normalize();
 }
 
-Intersection Raymarcher::march(const Ray &ray) {
+Intersection&& Raymarcher::march(const Ray &ray) {
     Vec3f position;
     Vec3f scaled;
 

@@ -17,7 +17,7 @@
 
 class Scene {
 public:
-    Intersection sceneSDF(const Vec3f& position);
+    Intersection&& sceneSDF(const Vec3f& position);
 };
 
 

@@ -15,7 +15,7 @@ public:
 
     Material surface_material() const { return m_surface_material; }
 
-    virtual Intersection sdf (const Vec3f& position) const = 0;
+    virtual Intersection&& sdf (const Vec3f& position) const = 0;
 private:
     Material m_surface_material;
 };
