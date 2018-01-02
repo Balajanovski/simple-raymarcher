@@ -97,9 +97,7 @@ Color Raymarcher::phong_illumination(const Material& material, const LightBase& 
 }
 
 void Raymarcher::calculate_frame() {
-    #pragma omp parallel for
     for (int y = m_grid->get_y_min(); y < m_grid->get_y_max(); ++y) {
-        #pragma omp for
         for (auto x = m_grid->get_x_min(); x < m_grid->get_x_max(); ++x) {
             Ray view_dir = ConfigManager::instance().get_camera()->fire_ray(convert_grid_coords_to_screen_space(x, y));
 
@@ -112,7 +110,6 @@ void Raymarcher::calculate_frame() {
             Color pixel_color = Color{0, 0, 0};
 
             size_t num_of_lights = ConfigManager::instance().get_amount_of_lights();
-            #pragma omp for
             for (int i = 0; i < num_of_lights; ++i) {
                 // Calculate ambient light
                 auto light = ConfigManager::instance().get_light(i);

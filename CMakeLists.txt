@@ -6,13 +6,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS "-O3")
 
-find_package(OpenMP)
-if (OPENMP_FOUND)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-else()
-    message("---- OpenMP not found, Raymarcher may run slower ----")
-endif()
-
 find_package(GLFW 3.0.0)
 if (GLFW_FOUND)
     add_definitions( -DGLFW_FOUND )
