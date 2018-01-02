@@ -37,9 +37,9 @@ private:
     Intersection&& march(const Ray& ray);
 
     std::pair<float, float> convert_grid_coords_to_screen_space(int x, int y);
-    Color phong_contrib_for_light(const Vec3f& diffuse, const Vec3f& specular, float alpha, const Vec3f& pos, const Vec3f& eye,
+    Color&& phong_contrib_for_light(const Vec3f& diffuse, const Vec3f& specular, float alpha, const Vec3f& pos, const Vec3f& eye,
                                   const LightBase& light, float attenuation);
-    Color phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,
+    Color&& phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,
                              const Vec3f &eye);
 
     static constexpr int MAX_MARCHING_STEPS = 256;
