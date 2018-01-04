@@ -16,8 +16,6 @@ class PixelBufferBase {
 private:
     // Stores the pixel data
     std::vector<Color> m_buffer;
-
-    std::mutex m_mutex;
 protected:
     std::vector<Color> &get_buffer() {
         return m_buffer;

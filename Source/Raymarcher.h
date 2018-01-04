@@ -44,7 +44,7 @@ private:
                              const Vec3f &eye);
 
     static constexpr int MAX_MARCHING_STEPS = 256;
-    static constexpr int NUM_OF_THREADS = 32;
+    static constexpr int NUM_OF_THREADS = 64;
     float epsilon;
 };
 
