@@ -13,6 +13,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <thread>
 
 // Uses the gradient of the SDF to estimate the normal on the surface
 // Much more efficient than calculus
@@ -99,8 +100,38 @@ Color&& Raymarcher::phong_illumination(const Material& material, const LightBase
     return std::move(color);
 }
 
+void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min, int x_max, const ConfigManager& config_manager_instance, size_t num_of_lights) {
+    for (auto y = y_lower_bound; y < y_upper_bound; ++y) {
+        for (auto x = x_min; x < x_max; ++x) {
+            Ray view_dir = config_manager_instance.get_camera()->fire_ray(convert_grid_coords_to_screen_space(x, y));
+
+            // March ray till an intersection is found
+            // If no intersection is found the BACKGROUND_MATERIAL is returned with the MAX_RENDER_DISTANCE
+            // These are declared in Constants.h
+
+            Intersection intersection = march(view_dir);
+
+            Color pixel_color = Color{0, 0, 0};
+
+            for (int i = 0; i < num_of_lights; ++i) {
+                // Calculate ambient light
+                auto light = config_manager_instance.get_light(i);
+
+                auto this_light_color = phong_illumination(intersection.material(), *light, intersection.pos(),
+                                                           config_manager_instance.get_camera()->pos());
+
+                pixel_color += this_light_color;
+
+            }
+
+            pixel_color.clamp_with_desaturation();
+            (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
+
+        }
+    }
+}
+
 void Raymarcher::calculate_frame() {
-    Color pixel_color = Color{0, 0, 0};
     size_t num_of_lights = ConfigManager::instance().get_amount_of_lights();
 
     int y_min = m_grid->get_y_min();
@@ -111,33 +142,18 @@ void Raymarcher::calculate_frame() {
 
     auto& config_manager_instance = ConfigManager::instance();
 
-    for (int y = y_min; y < y_max; ++y) {
-        for (auto x = x_min; x < x_max; ++x) {
-            Ray view_dir = config_manager_instance.get_camera()->fire_ray(convert_grid_coords_to_screen_space(x, y));
+    std::vector<std::thread> threads;
 
-            // March ray till an intersection is found
-            // If no intersection is found the BACKGROUND_MATERIAL is returned with the MAX_RENDER_DISTANCE
-            // These are declared in Constants.h
+    // Partition the screen based on how many threads there are
+    int rows_per_thread = (y_max - y_min) / NUM_OF_THREADS;
+    for (int y = y_min; y < (y_max - rows_per_thread); y += rows_per_thread) {
+        threads.push_back(std::thread(&Raymarcher::calculate_rows, this,
+                                      y, y + rows_per_thread, x_min, x_max,
+                                      std::cref(config_manager_instance), num_of_lights));
+    }
 
-            Intersection intersection = march(view_dir);
-
-            pixel_color.set_r(0.0f);
-            pixel_color.set_g(0.0f);
-            pixel_color.set_b(0.0f);
-
-            for (int i = 0; i < num_of_lights; ++i) {
-                // Calculate ambient light
-                auto light = config_manager_instance.get_light(i);
-
-                auto this_light_color = phong_illumination(intersection.material(), *light, intersection.pos(), config_manager_instance.get_camera()->pos());
-
-                pixel_color += this_light_color;
-
-            }
-
-            pixel_color.clamp_with_desaturation();
-            (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
-
-        }
+    // Join all threads
+    for (auto& thread : threads) {
+        thread.join();
     }
 }

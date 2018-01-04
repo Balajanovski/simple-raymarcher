@@ -13,6 +13,7 @@
 #include "Geometry/Ray.h"
 #include "Util/NonCopyable.h"
 #include "Color.h"
+#include "ConfigManager.h"
 
 #include <utility>
 
@@ -23,9 +24,9 @@ public:
                std::shared_ptr<Screen<int>>& grid)
             : m_scene(scene), m_buffer(buffer), m_grid(grid) {
         epsilon = 2.0f / (m_grid->get_x_max() - m_grid->get_x_min());
-        //printf("%f\n",epsilon);
     }
     void calculate_frame();
+    void calculate_rows(int y_lower_bound, int y_upper_bound, int x_min, int x_max, const ConfigManager& config_manager_instance, size_t num_of_lights);
 private:
 
     std::shared_ptr<Scene> m_scene;
@@ -43,6 +44,7 @@ private:
                              const Vec3f &eye);
 
     static constexpr int MAX_MARCHING_STEPS = 256;
+    static constexpr int NUM_OF_THREADS = 32;
     float epsilon;
 };
 
