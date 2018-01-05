@@ -18,7 +18,7 @@ if(GLFW_FOUND AND (GLFW_VERSION VERSION_EQUAL 3.0 OR GLFW_VERSION VERSION_GREATE
     add_definitions( -DGLFW_VERSION_3 )
 endif()
 
-find_package(OpenGL REQUIRED)
+find_package(OpenGL)
 if (OPENGL_FOUND)
     add_definitions( -DOPENGL_FOUND )
     message("- OpenGL Located")
@@ -27,7 +27,7 @@ else()
     message("- OpenGL not located\n->Windowed Mode Disabled")
 endif()
 
-find_package(PNG REQUIRED)
+find_package(PNG)
 if (PNG_FOUND)
     add_definitions( -DPNG_FOUND )
     message("- LibPNG Located")
