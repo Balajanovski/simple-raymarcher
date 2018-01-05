@@ -3,7 +3,7 @@
 
 #include "NonCopyable.h"
 
-#include "../Includes/glad.h"
+#include "glad/glad.h"
 #include <memory>
 #include <string>
 
