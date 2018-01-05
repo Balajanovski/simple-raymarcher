@@ -21,7 +21,6 @@ private:
     // PNG data
     png_structp png_ptr;
     png_infop info_ptr;
-    png_bytep row;
 
 
     // File pointer

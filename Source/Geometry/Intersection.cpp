@@ -4,10 +4,10 @@
 
 #include "Intersection.h"
 
-Intersection min(Intersection a, Intersection b) {
+Intersection min(const Intersection& a, const Intersection& b) {
     return (a.distance() < b.distance()) ? a : b;
 }
 
-Intersection max(Intersection a, Intersection b) {
+Intersection max(const Intersection& a, const Intersection& b) {
     return (a.distance() > b.distance()) ? a : b;
 }

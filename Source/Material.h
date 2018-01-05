@@ -29,18 +29,16 @@ public:
     }
 
     // Getters
-    Color&& specular()  const {
-        Color specular = Vec3f(1.0f, 1.0f, 1.0f) * m_specular;
-        return std::move(specular);
+    Color specular()  const {
+        return Color(1.0f, 1.0f, 1.0f) * m_specular;
     }
 
     Color diffuse()   const {
         return (ambient() + (m_color * m_diffuse));
     }
 
-    Color&& ambient()   const {
-        Color ambient = Vec3f(1.0f, 1.0f, 1.0f) * m_ambient;
-        return std::move(ambient);
+    Color ambient()   const {
+        return Color(1.0f, 1.0f, 1.0f) * m_ambient;
     }
 
     float shininess()   const { return m_shininess; }

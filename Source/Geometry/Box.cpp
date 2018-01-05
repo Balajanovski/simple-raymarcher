@@ -6,14 +6,15 @@
 
 #include <cmath>
 
-Intersection&& Box::sdf(const Vec3f& pos) const {
+void Box::sdf(IN const Vec3f& position, OUT Intersection& output_intersection) const {
 
-    auto sample_vector = pos + m_center;
+    auto sample_vector = position + m_center;
     sample_vector.make_positive();
 
     Vec3f d = sample_vector - m_box_vector;
 
-    return std::move(Intersection(fminf(fmaxf(d.x(), fmaxf(d.y(), d.z())), 0.0f) + max(d, Vec3f(0, 0, 0)).len(),
+    output_intersection = (Intersection(std::fmin(std::fmax(d.x(), fmax(d.y(), d.z())), 0.0f) + max(d, Vec3f(0, 0, 0)).len(),
                         surface_material(),
-                        pos));
+                        position));
+    return;
 }

@@ -7,6 +7,10 @@
 
 #include "Material.h"
 
+// Defined to show the use of pointers and references
+#define IN
+#define OUT
+
 namespace Constants {
     static constexpr float MAX_RENDER_DISTANCE = 300;
     static const Material BACKGROUND_MATERIAL = Material(0, 0, 0, 0, Color{0.0f, 0.0f, 0.0f});

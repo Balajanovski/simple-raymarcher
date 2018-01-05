@@ -17,21 +17,35 @@
 
 // Uses the gradient of the SDF to estimate the normal on the surface
 // Much more efficient than calculus
-Vec3f&& Raymarcher::estimate_normal(Vec3f point) {
+void Raymarcher::estimate_normal(IN const Vec3f& point, OUT Vec3f& normal) {
 
-    return std::move((Vec3f(
-            m_scene->sceneSDF(Vec3f(point.x() + epsilon, point.y(), point.z())).distance() -
-                    m_scene->sceneSDF(Vec3f(point.x() - epsilon, point.y(), point.z())).distance(),
+    Intersection x_upper, x_lower,
+                 y_upper, y_lower,
+                 z_upper, z_lower;
 
-            m_scene->sceneSDF(Vec3f(point.x(), point.y() + epsilon, point.z())).distance() -
-                    m_scene->sceneSDF(Vec3f(point.x(), point.y() - epsilon, point.z())).distance(),
+    m_scene->sceneSDF(Vec3f(point.x() + epsilon, point.y(), point.z()), x_upper);
+    m_scene->sceneSDF(Vec3f(point.x() - epsilon, point.y(), point.z()), x_lower);
 
-            m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z()  + epsilon)).distance() -
-                    m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() - epsilon)).distance()
-    )).normalize());
+    m_scene->sceneSDF(Vec3f(point.x(), point.y() + epsilon, point.z()), y_upper);
+    m_scene->sceneSDF(Vec3f(point.x(), point.y() - epsilon, point.z()), y_lower);
+
+    m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() + epsilon), z_upper);
+    m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() - epsilon), z_lower);
+
+    normal = (Vec3f(
+            x_upper.distance() -
+                    x_lower.distance(),
+
+            y_upper.distance() -
+                    y_lower.distance(),
+
+            z_upper.distance() -
+                    z_lower.distance()
+    )).normalize();
+    return;
 }
 
-Intersection&& Raymarcher::march(const Ray &ray) {
+void Raymarcher::march(IN const Ray& ray, OUT Intersection& output_intersection) {
     Vec3f position;
     Vec3f scaled;
 
@@ -39,22 +53,27 @@ Intersection&& Raymarcher::march(const Ray &ray) {
     for (int step = 0; step < MAX_MARCHING_STEPS; ++step) {
         scaled = ray.march(total);
         position = ConfigManager::instance().get_camera()->pos() + scaled;
-        auto intersection = m_scene->sceneSDF(position);
+
+        Intersection intersection;
+        m_scene->sceneSDF(position, intersection);
 
         total += intersection.distance();
 
         // Hits an object
         if (intersection.distance() < epsilon) {
-            return std::move(Intersection(total, intersection.material(), position));
+            output_intersection = Intersection(total, intersection.material(), position);
+            return;
         }
 
         // Does not hit an object
         if (intersection.distance() > Constants::MAX_RENDER_DISTANCE) {
-            return std::move(Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position));
+            output_intersection = Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position);
+            return;
         }
     }
 
-    return std::move(Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position));
+    output_intersection = Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position);
+    return;
 }
 
 std::pair<float, float> Raymarcher::convert_grid_coords_to_screen_space(int x, int y) {
@@ -66,9 +85,10 @@ std::pair<float, float> Raymarcher::convert_grid_coords_to_screen_space(int x, i
     return screen_space_coords;
 }
 
-Color&& Raymarcher::phong_contrib_for_light(const Color& diffuse, const Color &specular, float alpha, const Vec3f &pos,
-                                          const Vec3f &eye, const LightBase& light, float attenuation) {
-    Vec3f N = estimate_normal(pos);
+void Raymarcher::phong_contrib_for_light(IN const Color& diffuse, IN const Color &specular, IN float alpha, IN const Vec3f& pos,
+                                          IN const Vec3f &eye, IN const LightBase& light, IN float attenuation, OUT Color& output_color) {
+    Vec3f N;
+    estimate_normal(pos, N);
     Vec3f L = light.light_vec();
     Vec3f V = (eye - pos).normalize();
     Vec3f R = (Vec3f(0.0f, 0.0f, 0.0f) - L).reflect(N);
@@ -78,26 +98,32 @@ Color&& Raymarcher::phong_contrib_for_light(const Color& diffuse, const Color &s
 
     if (dotLN < 0.0) {
         // Light not visible
-        Color black{0.0f, 0.0f, 0.0f};
-        return std::move(black);
+        output_color = Color{0.0f, 0.0f, 0.0f};
+        return;
     }
 
     if (dotRV < 0.0) {
-        return std::move((light.intensity() * (diffuse * dotLN)) * attenuation);
+        output_color = ((light.intensity() * (diffuse * dotLN)) * attenuation);
+        return;
     }
-    return std::move((light.intensity() * (diffuse * dotLN + specular * powf(dotRV, alpha))) * attenuation);
+
+    output_color = ((light.intensity() * (diffuse * dotLN + specular * std::pow(dotRV, alpha))) * attenuation);
+    return;
 }
 
-Color&& Raymarcher::phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,
-                                     const Vec3f &eye) {
+void Raymarcher::phong_illumination(IN const Material& material, IN const LightBase& light, IN const Vec3f& pos,
+                                     IN const Vec3f& eye, OUT Color& output_color) {
     float attenuation = 1.0f / light.attenuation();
 
     Color color = (light.ambient() * material.ambient()) * attenuation;
 
-    color += phong_contrib_for_light(material.diffuse(), material.specular(),
-                                     material.shininess(), pos, eye, light, attenuation);
+    Color phong_contrib_for_light_output;
+    phong_contrib_for_light(material.diffuse(), material.specular(),
+                                     material.shininess(), pos, eye, light, attenuation, phong_contrib_for_light_output);
+    color += phong_contrib_for_light_output;
 
-    return std::move(color);
+    output_color = color;
+    return;
 }
 
 void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min, int x_max, const ConfigManager& config_manager_instance, size_t num_of_lights) {
@@ -109,7 +135,8 @@ void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min,
             // If no intersection is found the BACKGROUND_MATERIAL is returned with the MAX_RENDER_DISTANCE
             // These are declared in Constants.h
 
-            Intersection intersection = march(view_dir);
+            Intersection intersection;
+            march(view_dir, intersection);
 
             Color pixel_color = Color{0, 0, 0};
 
@@ -117,14 +144,16 @@ void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min,
                 // Calculate ambient light
                 auto light = config_manager_instance.get_light(i);
 
-                auto this_light_color = phong_illumination(intersection.material(), *light, intersection.pos(),
-                                                           config_manager_instance.get_camera()->pos());
+                Color this_light_color;
+                phong_illumination(intersection.material(), *light, intersection.pos(),
+                                   config_manager_instance.get_camera()->pos(), this_light_color);
 
                 pixel_color += this_light_color;
 
             }
 
             pixel_color.clamp_with_desaturation();
+
             (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
 
         }
@@ -142,11 +171,12 @@ void Raymarcher::calculate_frame() {
 
     auto& config_manager_instance = ConfigManager::instance();
 
+    // Initialise threads
     std::vector<std::thread> threads;
-
-    // Partition the screen based on how many threads there are
     int rows_per_thread = (y_max - y_min) / NUM_OF_THREADS;
-    for (int y = y_min; y < (y_max - rows_per_thread); y += rows_per_thread) {
+
+    // Partition the screen based
+    for (int y = y_min; y < y_max; y += rows_per_thread) {
         threads.push_back(std::thread(&Raymarcher::calculate_rows, this,
                                       y, y + rows_per_thread, x_min, x_max,
                                       std::cref(config_manager_instance), num_of_lights));

@@ -33,18 +33,18 @@ private:
     std::shared_ptr<PixelBufferBase> m_buffer;
     std::shared_ptr<Screen<int>> m_grid;
 
-    Vec3f&& estimate_normal(Vec3f point);
+    void estimate_normal(IN const Vec3f& point, OUT Vec3f& normal);
 
-    Intersection&& march(const Ray& ray);
+    void march(IN const Ray& ray, OUT Intersection& output_intersection);
 
     std::pair<float, float> convert_grid_coords_to_screen_space(int x, int y);
-    Color&& phong_contrib_for_light(const Color& diffuse, const Color& specular, float alpha, const Vec3f& pos, const Vec3f& eye,
-                                  const LightBase& light, float attenuation);
-    Color&& phong_illumination(const Material& material, const LightBase& light, const Vec3f &pos,
-                             const Vec3f &eye);
+    void phong_contrib_for_light(IN const Color& diffuse, IN const Color &specular, IN float alpha, IN const Vec3f &pos,
+                                    IN const Vec3f &eye, IN const LightBase& light, IN float attenuation, OUT Color& output_color);
+    void phong_illumination(IN const Material& material, IN const LightBase& light, IN const Vec3f& pos,
+                               IN const Vec3f& eye, OUT Color& output_color);
 
     static constexpr int MAX_MARCHING_STEPS = 256;
-    static constexpr int NUM_OF_THREADS = 64;
+    static constexpr int NUM_OF_THREADS = 1;
     float epsilon;
 };
 

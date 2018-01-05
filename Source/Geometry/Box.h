@@ -11,7 +11,7 @@ class Box : public SceneObject {
 public:
     Box(const Vec3f& center, const Vec3f& vec, const Material& material)
             : SceneObject(material), m_box_vector(vec), m_center(center) {  }
-    virtual Intersection&& sdf(const Vec3f& pos) const override;
+    virtual void sdf (IN const Vec3f& position, OUT Intersection& output_intersection) const override;
 private:
     Vec3f m_box_vector;
     Vec3f m_center;

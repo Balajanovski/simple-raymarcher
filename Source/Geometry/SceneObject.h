@@ -8,6 +8,7 @@
 #include "../Material.h"
 #include "Intersection.h"
 #include "Vec3f.h"
+#include "../Constants.h"
 
 class SceneObject {
 public:
@@ -15,7 +16,7 @@ public:
 
     Material surface_material() const { return m_surface_material; }
 
-    virtual Intersection&& sdf (const Vec3f& position) const = 0;
+    virtual void sdf (IN const Vec3f& position, OUT Intersection& output_intersection) const = 0;
 private:
     Material m_surface_material;
 };

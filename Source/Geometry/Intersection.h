@@ -16,6 +16,7 @@ class Intersection {
 public:
     Intersection(float distance, const Material& material, const Vec3f& pos)
             : m_distance(distance), m_material(material), m_intersection_pos(pos) { }
+    Intersection() = default;
 
     float    distance() const { return m_distance; }
     Material material() const { return m_material; }
@@ -26,7 +27,7 @@ private:
     Vec3f    m_intersection_pos;
 };
 
-Intersection min(Intersection a, Intersection b);
-Intersection max(Intersection a, Intersection b);
+Intersection min(const Intersection& a, const Intersection& b);
+Intersection max(const Intersection& a, const Intersection& b);
 
 #endif //SIMPLE_RAYTRACER_INTERSECTION_H
