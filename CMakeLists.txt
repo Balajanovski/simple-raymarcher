@@ -42,6 +42,6 @@ message("YamlCpp found\n->Include dir: ${YAMLCPP_INCLUDE_DIR}\n->Library: ${YAML
 include_directories(${YAMLCPP_INCLUDE_DIR})
 link_directories(${YAMLCPP_LIBRARY_DIR})
 
-set(SOURCE_FILES Source/main.cpp Source/Application.cpp Source/Raymarcher.cpp glad.c Source/Geometry/Sphere.cpp Source/Geometry/Vec3f.cpp Source/Geometry/Ray.cpp Source/Color.cpp Source/Scene.cpp Source/Camera.cpp Source/Util/Shader.cpp Source/ScreenBuffer.cpp Source/Lighting/LightBase.cpp Source/Geometry/Intersection.cpp Source/Geometry/Vec4f.cpp Source/ConfigManager.cpp Source/Lighting/DirectionalLight.cpp Source/ImageBuffer.cpp Source/Geometry/Plane.cpp Source/Geometry/Box.cpp)
+set(SOURCE_FILES Source/main.cpp Source/Application.cpp Source/Raymarcher.cpp Source/Includes/glad.c Source/Geometry/Sphere.cpp Source/Geometry/Vec3f.cpp Source/Geometry/Ray.cpp Source/Color.cpp Source/Scene.cpp Source/Camera.cpp Source/Util/Shader.cpp Source/ScreenBuffer.cpp Source/Lighting/LightBase.cpp Source/Geometry/Intersection.cpp Source/Geometry/Vec4f.cpp Source/ConfigManager.cpp Source/Lighting/DirectionalLight.cpp Source/ImageBuffer.cpp Source/Geometry/Plane.cpp Source/Geometry/Box.cpp)
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${YAMLCPP_LIBRARY} ${PNG_LIBRARIES} ${GLFW_LIBRARIES})
