@@ -44,7 +44,7 @@ private:
                                IN const Vec3f& eye, OUT Color& output_color);
 
     static constexpr int MAX_MARCHING_STEPS = 256;
-    static constexpr int NUM_OF_THREADS = 1;
+    static constexpr int NUM_OF_THREADS = 256;
     float epsilon;
 };
 
