@@ -54,11 +54,13 @@ void ImageBuffer::flush() {
 
     png_write_info(png_ptr, info_ptr);
 
-    std::vector<ByteColor> row(3 * m_screen->width());
+    std::vector<ByteColor> row;
+
     auto first = get_buffer().begin();
     auto last = get_buffer().begin() + m_screen->width();
 
     while (first != get_buffer().end()) {
+        row.reserve(3 * m_screen->width());
 
         // Copy the color values from the buffer and convert
         // them to ByteColor for use by libPNG
