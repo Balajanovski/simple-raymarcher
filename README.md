@@ -8,7 +8,7 @@ The program is written entirely in C++.<br>
 All of the raymarching code is in the `Raymarching.cpp` file, the rest is mostly boilerplate.<br>
 You can change the scene via the file `Config/config.yaml`<br>
 ## Raymarching information
-Raymarching is the alternative technique to Raycasting. Both of these techniques are part of the Raytracing family.<br>
+Raymarching is the alternative technique to Raytracing. Both of these techniques are part of the ray rendering family.<br>
 Instead of casting out a ray and attempting to intersect a line with an object, raymarching, as it's name suggests, marches along a ray based on the scene's signed distance function until the distance output from the signed distance function is < 0.<br>
 Due to the versatility of signed distance functions (SDFs), complex scenes can be rendered easily like fractals.<br><br>
 
