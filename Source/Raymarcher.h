@@ -38,7 +38,7 @@ private:
     void march(IN const Ray& ray, OUT Intersection& output_intersection);
 
     std::pair<float, float> convert_grid_coords_to_screen_space(int x, int y);
-    void phong_contrib_for_light(IN const Color& diffuse, IN const Color &specular, IN float alpha, IN const Vec3f &pos,
+    void phong_contrib_for_light(IN const Color& diffuse, IN const Color &specular_color, IN float alpha, IN const Vec3f &pos,
                                     IN const Vec3f &eye, IN const LightBase& light, IN float attenuation, OUT Color& output_color);
     void phong_illumination(IN const Material& material, IN const LightBase& light, IN const Vec3f& pos,
                                IN const Vec3f& eye, OUT Color& output_color);
