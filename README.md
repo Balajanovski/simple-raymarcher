@@ -1,4 +1,6 @@
 # simple-raymarcher
+[![Screen_Shot_2018-01-06_at_4.23.51_PM.png](https://s18.postimg.org/lcf0ulo1l/Screen_Shot_2018-01-06_at_4.23.51_PM.png)](https://postimg.org/image/thx2srcad/)
+
 ## About
 The simple raymarcher is a project I've created as a "reference" for the raymarching rendering technique which can be used and understood by beginners to CGI. Unfortunately there are not many projects on github written in C++ for raymarching. The technique is mostly implemented on ShaderToy in GLSL, and when I was learning about this rendering technique, I had noticed a distinct abscence of information on the topic. This is why I've created this repository.<br> 
 ## Structure
@@ -31,6 +33,3 @@ Here is a list of resources on raymarching:<br>
   - Signed distance functions: http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
   - Iterative shapes (Prelude to fractals): http://iquilezles.org/www/articles/menger/menger.htm
   - Mandelbulb fractal: http://iquilezles.org/www/articles/mandelbulb/mandelbulb.htm
-
-## Sample output from this raymarcher:
-[![Screen_Shot_2018-01-06_at_4.23.51_PM.png](https://s18.postimg.org/klmap2lqx/Screen_Shot_2018-01-06_at_4.23.51_PM.png)](https://postimg.org/image/s1lkav9g5/)
