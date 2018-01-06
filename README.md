@@ -29,6 +29,7 @@ Although the article on Phong lighting is not on Blinn-Phong, I strongly suggest
 ### Articles on Raymarching
 Here is a list of resources on raymarching:<br>
 * Jamie Wong's article (Raymarching in general): http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
+* Raymarching vs. Sphere tracing: https://computergraphics.stackexchange.com/questions/161/what-is-ray-marching-is-sphere-tracing-the-same-thing
 * Inigo Quilez's articles: 
   - Signed distance functions: http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
   - Iterative shapes (Prelude to fractals): http://iquilezles.org/www/articles/menger/menger.htm
