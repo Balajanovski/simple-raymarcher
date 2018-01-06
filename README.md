@@ -5,7 +5,7 @@
 The simple raymarcher is a project I've created as a "reference" for the raymarching rendering technique which can be used and understood by beginners to CGI. Unfortunately there are not many projects on github written in C++ for raymarching. The technique is mostly implemented on ShaderToy in GLSL, and when I was learning about this rendering technique, I had noticed a distinct abscence of information on the topic. This is why I've created this repository.<br> 
 ## Structure
 The program is written entirely in C++.<br>
-All of the raymarching code is in the `Raymarching.cpp` file, the rest is mostly boilerplate.<br>
+All of the raymarching code is in the `Raymarching.cpp` file.<br>
 You can change the scene via the file `Config/config.yaml`<br>
 ## Raymarching information
 Raymarching is the alternative technique to Raytracing. Both of these techniques are part of the ray rendering family.<br>
