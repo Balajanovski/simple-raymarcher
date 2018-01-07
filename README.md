@@ -20,7 +20,7 @@ http://iquilezles.org/www/articles/distfunctions/distfunctions.htm <br><br>
 
 ### Blinn-Phong lighting
 The lighting model used is the Blinn-Phong lighting model, which is an extension of the Phong lighting model.<br>
-Information can about the Blinn-Phong lighting model can be found below:<br>
+Information about the Blinn-Phong lighting model can be found below:<br>
 https://glium.github.io/glium/book/tuto-13-phong.html <br>
 While information on the Phong lighting model can be found below: <br>
 https://blogs.igalia.com/itoral/2017/07/06/working_lights_shadows_parti_phong_reflection_model/ <br>
