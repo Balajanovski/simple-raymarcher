@@ -7,30 +7,32 @@
 
 Shader::Shader(Shader&& other) : m_ID(other.m_ID) {
     // Increase the references counter
-    (*references) += 1;
+    (*m_references) += 1;
+    other.m_references = m_references;
 }
 
 Shader& Shader::operator=(Shader&& rhs) {
     m_ID = rhs.m_ID;
 
     // Increase the references counter
-    (*references) += 1;
+    (*m_references) += 1;
+    rhs.m_references = m_references;
 
     return *this;
 }
 
 Shader::~Shader() {
     // If there are no other references, delete the shader
-    if (*references == 0) {
+    if (*m_references == 0) {
         glDeleteProgram(m_ID);
         return;
     }
 
     // Otherwise do nothing and just decrease the ref counter
-    (*references) -= 1;
+    (*m_references) -= 1;
 }
 
-Shader::Shader(const char *vertex_path, const char *fragment_path) : references(std::make_shared<unsigned int>(0)) {
+Shader::Shader(const char *vertex_path, const char *fragment_path) : m_references(std::make_shared<unsigned int>(0)) {
 
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertex_code;

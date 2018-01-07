@@ -15,7 +15,7 @@ public:
 
 
     // References counter
-    std::shared_ptr<unsigned int> references;
+    std::shared_ptr<unsigned int> m_references;
 
     // R-value constructor
     Shader(Shader&&);
