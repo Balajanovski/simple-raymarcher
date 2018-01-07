@@ -89,7 +89,7 @@ void Raymarcher::phong_contrib_for_light(IN const Color& diffuse, IN const Color
                                           IN const Vec3f &eye, IN const LightBase& light, IN float attenuation, OUT Color& output_color) {
     Vec3f N;
     estimate_normal(pos, N);
-    Vec3f L = light.light_vec();
+    Vec3f L = light.light_vec(pos);
     Vec3f camera_dir = (eye - pos).normalize();
     Vec3f R = (Vec3f(0.0f, 0.0f, 0.0f) - L).reflect(N);
 
@@ -111,7 +111,8 @@ void Raymarcher::phong_contrib_for_light(IN const Color& diffuse, IN const Color
     float specular = std::pow(std::fmax(half_direction.dot(N), 0.0), 16.0);
 
     // Blinn - phong calculation
-    output_color = ((light.intensity() * (diffuse * dotLN + specular_color * std::pow(dotRV, alpha) * specular)) * attenuation);
+    output_color = ((light.intensity() * ((diffuse) * dotLN +
+            (specular_color) * std::pow(dotRV, alpha) * specular)) * attenuation);
     return;
 }
 

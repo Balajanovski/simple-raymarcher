@@ -8,6 +8,7 @@
 #include "Geometry/Box.h"
 #include "Geometry/Plane.h"
 #include "Lighting/DirectionalLight.h"
+#include "Lighting/PointLight.h"
 
 #include <yaml-cpp/yaml.h>
 
@@ -85,6 +86,16 @@ void ConfigManager::load_file(const std::string &file_src) {
                                                                   properties["diffuse"].as<float>(),
                                                                   properties["specular"].as<float>(),
                                                                   properties["intensity"].as<float>(),
+                                                                  properties["color"].as<Color>()));
+        }
+        else if (lights[i]["type"].as<std::string>() == "PointLight") {
+            auto properties = lights[i]["properties"];
+            m_lights.push_back(std::make_shared<PointLight>(properties["pos"].as<Vec3f>(),
+                                                                  properties["ambient"].as<float>(),
+                                                                  properties["diffuse"].as<float>(),
+                                                                  properties["specular"].as<float>(),
+                                                                  properties["intensity"].as<float>(),
+                                                                  properties["attenuation"].as<float>(),
                                                                   properties["color"].as<Color>()));
         }
         else {

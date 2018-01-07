@@ -16,7 +16,7 @@ public:
             : LightBase(pos, ambient, diffuse, specular, intensity, 1.0f, color), m_light_direction(light_dir) { }
     DirectionalLight() = default;
 
-    virtual Vec3f light_vec() const override { return m_light_direction; }
+    virtual Vec3f light_vec(const Vec3f& end_of_light_ray_pos) const override { return m_light_direction; }
     void set_light_direction(const Vec3f& dir) { m_light_direction = dir; }
 
 private:

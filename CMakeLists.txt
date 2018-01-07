@@ -61,7 +61,7 @@ file(GLOB SOURCE_FILES
         "${PROJECT_SOURCE_DIR}/Util/*.cpp"
         )
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} Source/Lighting/PointLight.cpp Source/Lighting/PointLight.h)
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
         ${YAMLCPP_LIBRARY}

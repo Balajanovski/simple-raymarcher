@@ -19,25 +19,34 @@ objects:
       width: 0.6
       height: 0.5
       breadth: 0.25
-      material: {specular: 0.5, diffuse: 0.7, ambient: 0.25, shininess: 2.0, color: {R: 1.0, G: 1.0, B: 0.0}}
+      material: {specular: 0.9, diffuse: 0.7, ambient: 0.25, shininess: 2.0, color: {R: 1.0, G: 1.0, B: 0.0}}
 
 
 lights:
-  - type: DirectionalLight
+  - type: PointLight
     properties:
-      pos: {X: 6.0, Y: 0.0, Z: 3.0}
-      light_dir: {X: -2.0, Y: 0.0, Z: -1.0}
+      pos: {X: 0.0, Y: 0.0, Z: 0.0}
       ambient: 0.2
       diffuse: 0.8
       specular: 1.0
-      intensity: 0.2
+      intensity: 0.5
       color: {R: 1.0, G: 1.0, B: 1.0}
-  - type: DirectionalLight
-    properties:
-      pos: {X: -6.0, Y: 0.0, Z: 3.0}
-      light_dir: {X: 2.0, Y: 0.0, Z: -1.0}
-      ambient: 0.2
-      diffuse: 0.8
-      specular: 0.4
-      intensity: 0.1
-      color: {R: 1.0, G: 1.0, B: 1.0}
+      attenuation: 1.1
+  #- type: DirectionalLight
+  #  properties:
+  #    pos: {X: 6.0, Y: 0.0, Z: 3.0}
+  #    light_dir: {X: -2.0, Y: 0.0, Z: -1.0}
+  #    ambient: 0.2
+  #    diffuse: 0.8
+  #    specular: 1.0
+  #    intensity: 0.2
+  #    color: {R: 1.0, G: 1.0, B: 1.0}
+  #- type: DirectionalLight
+  #  properties:
+  #    pos: {X: -6.0, Y: 0.0, Z: 3.0}
+  #    light_dir: {X: 2.0, Y: 0.0, Z: -1.0}
+  #    ambient: 0.2
+  #    diffuse: 0.8
+  #    specular: 0.4
+  #    intensity: 0.1
+  #    color: {R: 1.0, G: 1.0, B: 1.0}

@@ -16,7 +16,7 @@ public:
     LightBase() = default;
 
 
-    virtual Vec3f light_vec() const = 0;
+    virtual Vec3f light_vec(const Vec3f& end_of_light_ray_pos) const = 0;
 
     Vec3f pos() const { return m_pos; }
     void set_pos(const Vec3f& pos) { m_pos = pos; }
@@ -27,7 +27,7 @@ public:
     Color diffuse() const { return m_color * m_diffuse; }
     void set_diffuse(float diffuse) { m_diffuse = diffuse; }
 
-    Color specular() const { return m_color * m_specular; }
+    Color specular() const { return Vec3f(1.0f, 1.0f, 1.0f) * m_specular; }
     void set_specular(float specular) { m_specular = specular; }
 
     Color intensity() const {
