@@ -9,6 +9,9 @@
 
 #include <yaml-cpp/node/node.h>
 
+#define IN
+#define OUT
+
 class Color {
 public:
     Color(float r, float g, float b);
@@ -75,5 +78,7 @@ namespace YAML {
         }
     };
 }
+
+void mix(IN const Color& color1, IN const Color& color2, IN float interpolation_factor, OUT Color& mixed_color);
 
 #endif //SIMPLE_RAYTRACER_COLOR_H

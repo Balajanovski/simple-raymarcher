@@ -42,9 +42,11 @@ private:
                                     IN const Vec3f &eye, IN const LightBase& light, IN float attenuation, OUT Color& output_color);
     void phong_illumination(IN const Material& material, IN const LightBase& light, IN const Vec3f& pos,
                                IN const Vec3f& eye, OUT Color& output_color);
+    void apply_fog(IN const Color& color, IN float distance, OUT Color& resultant_color);
 
     static constexpr int MAX_MARCHING_STEPS = 256;
     static constexpr int NUM_OF_THREADS = 256;
+    static const Color FOG_COLOR;
     float epsilon;
 };
 

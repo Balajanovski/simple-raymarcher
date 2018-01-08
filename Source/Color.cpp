@@ -121,3 +121,8 @@ void Color::clamp_with_desaturation() {
 
 }
 
+void mix(IN const Color& color1, IN const Color& color2, IN float interpolation_factor, OUT Color& mixed_color) {
+    mixed_color.set_r(color1.r() * (1 - interpolation_factor) + color2.r() * interpolation_factor);
+    mixed_color.set_g(color1.g() * (1 - interpolation_factor) + color2.g() * interpolation_factor);
+    mixed_color.set_b(color1.b() * (1 - interpolation_factor) + color2.b() * interpolation_factor);
+}

@@ -15,6 +15,8 @@
 #include <iostream>
 #include <thread>
 
+const Color Raymarcher::FOG_COLOR = {0.0f, 0.0f, 0.0f};
+
 // Uses the gradient of the SDF to estimate the normal on the surface
 // Much more efficient than calculus
 void Raymarcher::estimate_normal(IN const Vec3f& point, OUT Vec3f& normal) {
@@ -131,6 +133,11 @@ void Raymarcher::phong_illumination(IN const Material& material, IN const LightB
     return;
 }
 
+void Raymarcher::apply_fog(IN const Color& color, IN float distance, OUT Color& resultant_color) {
+    float fog_amount = 1.0 - std::pow(M_E, -distance * 0.2);
+    mix(color, FOG_COLOR, fog_amount, resultant_color);
+}
+
 void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min, int x_max, const ConfigManager& config_manager_instance, size_t num_of_lights) {
     for (auto y = y_lower_bound; y < y_upper_bound; ++y) {
         for (auto x = x_min; x < x_max; ++x) {
@@ -156,6 +163,8 @@ void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min,
                 pixel_color += this_light_color;
 
             }
+
+            apply_fog(pixel_color, intersection.distance(), pixel_color);
 
             pixel_color.clamp_with_desaturation();
 
