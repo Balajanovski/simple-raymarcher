@@ -87,13 +87,6 @@ void Color::clamp() {
     }
 }
 
-#define dmin(a, b) (((a) < (b)) ? (a) : (b))
-
-
-
-
-
-
 // This clamp with desaturation algorithm was taken from Bisqwit with his permission
 // The original source can be found via the link below:
 // https://gist.github.com/bisqwit/6fa30964eacefeea2954e5c42c966114

@@ -18,9 +18,9 @@ public:
     Color(const Vec3f& vector);
     Color() { m_rgb[0] = m_rgb[1] = m_rgb[2] = 0; }
 
-    float r() const { return m_rgb[0]; }
-    float g() const { return m_rgb[1]; }
-    float b() const { return m_rgb[2]; }
+    inline float r() const { return m_rgb[0]; }
+    inline float g() const { return m_rgb[1]; }
+    inline float b() const { return m_rgb[2]; }
 
     inline void set_r(float r) { m_rgb[0] = r; }
     inline void set_g(float g) { m_rgb[1] = g; }

@@ -153,7 +153,6 @@ void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min,
             Color pixel_color = Color{0, 0, 0};
 
             for (int i = 0; i < num_of_lights; ++i) {
-                // Calculate ambient light
                 auto light = config_manager_instance.get_light(i);
 
                 Color this_light_color;
