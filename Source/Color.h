@@ -22,9 +22,9 @@ public:
     float g() const { return m_rgb[1]; }
     float b() const { return m_rgb[2]; }
 
-    void set_r(float r) { m_rgb[0] = r; }
-    void set_g(float g) { m_rgb[1] = g; }
-    void set_b(float b) { m_rgb[2] = b; }
+    inline void set_r(float r) { m_rgb[0] = r; }
+    inline void set_g(float g) { m_rgb[1] = g; }
+    inline void set_b(float b) { m_rgb[2] = b; }
 
     // Vector operations
     Color operator+(const Color& rhs) const;
@@ -42,7 +42,7 @@ public:
     float dot(const Color& rhs) const;
     Color cross(const Color& rhs ) const;
 
-    void clamp_with_desaturation();
+    void clamp_with_desaturation(int x, int y);
     void clamp();
     Vec3f to_vector() { return Vec3f(r(), g(), b()); }
 

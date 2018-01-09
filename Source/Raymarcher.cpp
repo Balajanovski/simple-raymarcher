@@ -134,7 +134,7 @@ void Raymarcher::phong_illumination(IN const Material& material, IN const LightB
 }
 
 void Raymarcher::apply_fog(IN const Color& color, IN float distance, OUT Color& resultant_color) {
-    float fog_amount = 1.0 - std::pow(M_E, -distance * 0.2);
+    float fog_amount = 1.0 - std::pow(M_E, -distance * 0.1);
     mix(color, FOG_COLOR, fog_amount, resultant_color);
 }
 
@@ -166,7 +166,7 @@ void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min,
 
             apply_fog(pixel_color, intersection.distance(), pixel_color);
 
-            pixel_color.clamp_with_desaturation();
+            pixel_color.clamp_with_desaturation(x, y);
 
             (*m_buffer).add_to_buffer(x, y, std::move(pixel_color));
 

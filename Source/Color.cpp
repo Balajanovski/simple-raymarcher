@@ -89,36 +89,70 @@ void Color::clamp() {
 
 #define dmin(a, b) (((a) < (b)) ? (a) : (b))
 
-void Color::clamp_with_desaturation() {
-    double luma = calculate_luma(m_rgb),
-           sat  = 1.0;
 
-    if (luma > 1.0) {
-        m_rgb[0] = m_rgb[1] = m_rgb[2] = 1.0;
+
+
+
+
+// This clamp with desaturation algorithm was taken from Bisqwit with his permission
+// The original source can be found via the link below:
+// https://gist.github.com/bisqwit/6fa30964eacefeea2954e5c42c966114
+
+#define LUMA_COEFFICIENTS      0.29900,  0.58700,  0.11400
+
+void Color::clamp_with_desaturation(int x, int y)
+{
+    float l = dot(Color(LUMA_COEFFICIENTS));
+    //float l = rgb.HorizontalSum() / 3.f; // faster but less accurate
+    if(l >= 255.f) {
+        set_r(1.0f);
+        set_g(1.0f);
+        set_b(1.0f);
         return;
     }
 
-    if (luma < 0.0) {
-        m_rgb[0] = m_rgb[1] = m_rgb[2] = 0.0;
+    // __builtin_expect is an optimization to the traditional else if statement
+    // supported by GNU gcc and LLVM clang.
+#if defined(USING_GCC) || defined(USING_CLANG)
+    else if(__builtin_expect(l <= 0.0f, false)) {
+        set_r(0.0f);
+        set_b(0.0f);
+        set_g(0.0f);
         return;
     }
+#else
+    else if(l <= 0.0f) {
+        set_r(0.0f);
+        set_b(0.0f);
+        set_g(0.0f);
+        return;
+    }
+#endif
+    else
+    {
+        float s = 1.0f;
+        for(unsigned n = 0; n < 3; ++n) {
+            if(m_rgb[n] > 255.f) {
+                s = std::min(s, (l - 255.f) / (l - m_rgb[n]));
+            }
+#if defined(USING_GCC) || defined(USING_CLANG)
+            else if(__builtin_expect(m_rgb[n] < 0.0f, false)) {
+                s = std::min(s, l           / (l - m_rgb[n]));
+            }
+#else
+            else if(m_rgb[n] < 0.0f) {
+                s = std::min(s, l           / (l - m_rgb[n]));
+            }
+#endif
 
-    for (int i = 0; i < 3; ++i) {
-        if (m_rgb[i] > 1.0) {
-            sat = dmin(sat, (luma - 1.0) / (luma - m_rgb[i]));
         }
-        else if (m_rgb[i] < 0.0) {
-            sat = dmin(sat, luma / (luma - m_rgb[i]));
+        if(s != 1.0f) {
+            for (int i = 0; i < 3; ++i) {
+                m_rgb[i] = (m_rgb[i] - l) * s + l;
+            }
         }
     }
-
-    if (sat != 1.0) {
-        for (int i = 0; i < 3; ++i) {
-            m_rgb[i] = (m_rgb[i] - luma) * sat + luma;
-            m_rgb[i] = clamp_value(m_rgb[i]);
-        }
-    }
-
+    return;
 }
 
 void mix(IN const Color& color1, IN const Color& color2, IN float interpolation_factor, OUT Color& mixed_color) {
