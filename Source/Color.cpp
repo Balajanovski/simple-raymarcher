@@ -113,7 +113,7 @@ void Color::clamp_with_desaturation(int x, int y)
 
     // __builtin_expect is an optimization to the traditional else if statement
     // supported by GNU gcc and LLVM clang.
-#if defined(USING_GCC) || defined(USING_CLANG)
+#if defined(__GNUC__) || defined(__clang__)
     else if(__builtin_expect(l <= 0.0f, false)) {
         set_r(0.0f);
         set_b(0.0f);
@@ -135,7 +135,7 @@ void Color::clamp_with_desaturation(int x, int y)
             if(m_rgb[n] > 255.f) {
                 s = std::min(s, (l - 255.f) / (l - m_rgb[n]));
             }
-#if defined(USING_GCC) || defined(USING_CLANG)
+#if defined(__GNUC__) || defined(__clang__)
             else if(__builtin_expect(m_rgb[n] < 0.0f, false)) {
                 s = std::min(s, l           / (l - m_rgb[n]));
             }

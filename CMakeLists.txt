@@ -37,14 +37,6 @@ else()
     message("- LibPNG not located\n->Image Mode Disabled")
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" )
-    add_definitions( -DUSING_CLANG )
-    message("- CMake detected that you are using Clang")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    add_definitions( -DUSING_GCC )
-    message("- CMake detected that you are using GCC")
-endif()
-
 find_package(YamlCpp REQUIRED)
 message("YamlCpp found\n->Include dir: ${YAMLCPP_INCLUDE_DIR}\n->Library: ${YAMLCPP_LIBRARY}")
 
