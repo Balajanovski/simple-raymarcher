@@ -1,2 +1,2 @@
-cmake
-Source/Includes/glad
+cmake/* linguist-vendored
+Source/Includes/glad/* linguist-vendored

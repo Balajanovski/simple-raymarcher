@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS "-O3 -Wall")
 
-find_package(GLFW 3.0.0 REQUIRED)
+find_package(GLFW 3.0.0)
 if (GLFW_FOUND)
     add_definitions( -DGLFW_FOUND )
     message("- GLFW Located")
