@@ -1,5 +1,5 @@
 # simple-raymarcher
-[![Screen_Shot_2018-01-06_at_4.23.51_PM.png](https://s18.postimg.org/lcf0ulo1l/Screen_Shot_2018-01-06_at_4.23.51_PM.png)](https://postimg.org/image/thx2srcad/)
+![Screenshot of raymarcher output](https://raw.githubusercontent.com/Balajanovski/simple-raymarcher/master/screenshot.png)
 
 ## About
 The simple raymarcher is a project I've created as a "reference" for the SDF raymarching rendering technique which can be used and understood by beginners to CGI. Unfortunately there are not many projects on github written in C++ (all calculated on the CPU) for raymarching. The technique is mostly implemented on ShaderToy in GLSL, and when I was learning about this rendering technique, I had noticed a distinct abscence of information on the topic. This is why I've created this repository.<br> 
