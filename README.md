@@ -1,5 +1,5 @@
 # simple-raymarcher
-![Screenshot of raymarcher output](https://raw.githubusercontent.com/Balajanovski/simple-raymarcher/master/screenshot.png)
+![Screenshot of default raymarcher output](https://raw.githubusercontent.com/Balajanovski/simple-raymarcher/master/screenshot.png)
 
 ## About
 The simple raymarcher is a project I've created as a "reference" for the SDF raymarching rendering technique which can be used and understood by beginners to CGI. Unfortunately there are not many projects on github written in C++ (all calculated on the CPU) for raymarching. The technique is mostly implemented on ShaderToy in GLSL, and when I was learning about this rendering technique, I had noticed a distinct abscence of information on the topic. This is why I've created this repository.<br> 
@@ -35,3 +35,8 @@ Here is a list of resources on raymarching:<br>
   - Signed distance functions: http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
   - Iterative shapes (Prelude to fractals): http://iquilezles.org/www/articles/menger/menger.htm
   - Mandelbulb fractal: http://iquilezles.org/www/articles/mandelbulb/mandelbulb.htm
+
+
+## Screenshots
+![Screenshot of default raymarcher output](https://raw.githubusercontent.com/Balajanovski/simple-raymarcher/master/screenshot.png)
+![Screenshot of rendered menger sponge](https://raw.githubusercontent.com/Balajanovski/simple-raymarcher/master/screenshot2.png)
