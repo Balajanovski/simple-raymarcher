@@ -21,8 +21,16 @@ Vec3f Vec3f::operator+(const Vec3f &rhs) const {
     return Vec3f(x() + rhs.x(), y() + rhs.y(), z() + rhs.z());
 }
 
+Vec3f Vec3f::operator+(float k) const {
+    return Vec3f(x() + k, y() + k, z() + k);
+}
+
 Vec3f Vec3f::operator-(const Vec3f &rhs) const {
     return Vec3f(x() - rhs.x(), y() - rhs.y(), z() - rhs.z());
+}
+
+Vec3f Vec3f::operator-(float k) const {
+    return Vec3f(x() - k, y() - k, z() - k);
 }
 
 Vec3f Vec3f::operator*(float k) const {
@@ -35,6 +43,10 @@ Vec3f Vec3f::operator*(const Vec3f &rhs) const {
 
 Vec3f Vec3f::operator/(float k) const {
     return Vec3f(x() / k, y() / k, z() / k);
+}
+
+Vec3f Vec3f::operator%(float k) const {
+    return Vec3f(x() - k * std::floor(x() / k), y() - k * std::floor(y() / k), z() - k * std::floor(z() / k));
 }
 
 float Vec3f::len() const {
@@ -74,4 +86,8 @@ Vec3f min(const Vec3f& lhs, const Vec3f& rhs) {
 
 Vec3f max(const Vec3f& lhs, const Vec3f& rhs) {
     return Vec3f(fmaxf(lhs.x(), rhs.x()), fmaxf(lhs.y(), rhs.y()), fmaxf(lhs.z(), rhs.z()));
+}
+
+Vec3f abs(const Vec3f& vec) {
+    return Vec3f(std::abs(vec.x()), std::abs(vec.y()), std::abs(vec.z()));
 }

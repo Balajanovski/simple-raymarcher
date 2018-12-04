@@ -6,6 +6,7 @@
 #include "Geometry/Vec3f.h"
 #include "Geometry/Sphere.h"
 #include "Geometry/Box.h"
+#include "Geometry/Menger.h"
 #include "Geometry/Plane.h"
 #include "Lighting/DirectionalLight.h"
 #include "Lighting/PointLight.h"
@@ -70,6 +71,13 @@ void ConfigManager::load_file(const std::string &file_src) {
             m_objects.push_back(std::make_shared<Box>(properties["center"].as<Vec3f>(),
                                                       Vec3f(width / 2, height / 2, breadth / 2),
                                                       properties["material"].as<Material>()));
+        }
+        else if (objects[i]["type"].as<std::string>() == "Menger") {
+            auto properties = objects[i]["properties"];
+
+            m_objects.push_back(std::make_shared<Menger>(properties["center"].as<Vec3f>(),
+                                                      properties["material"].as<Material>(),
+                                                      properties["iterations"].as<size_t>()));
         }
         else {
             throw std::runtime_error("config file syntax error: no such object type as " + objects[i]["type"].as<std::string>());

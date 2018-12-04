@@ -6,6 +6,20 @@
 #define SIMPLE_RAYTRACER_BOX_H
 
 #include "SceneObject.h"
+#include <cmath>
+
+// Created for the menger sponge fractal
+#define box_sdf(position, center, box_vector, output_intersection_distance)                                             \
+    {                                                                                                                   \
+                                                                                                                        \
+        auto sample_vector = (position) + (center);                                                                     \
+        sample_vector.make_positive();                                                                                  \
+                                                                                                                        \
+        Vec3f d = sample_vector - (box_vector);                                                                         \
+                                                                                                                        \
+        output_intersection_distance = (std::fmin(std::fmax(d.x(),                                                      \
+                                fmax(d.y(), d.z())), 0.0f) + max(d, Vec3f(0, 0, 0)).len());                             \
+    }                                                                                                                   \
 
 class Box : public SceneObject {
 public:

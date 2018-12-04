@@ -19,15 +19,18 @@ public:
     float z() const { return data[2]; }
 
     // Setters
-    Vec3f set_x(float x) { data[0] = x; return *this; }
-    Vec3f set_y(float y) { data[1] = y; return *this; }
-    Vec3f set_z(float z) { data[2] = z; return *this; }
+    Vec3f& set_x(float x) { data[0] = x; return *this; }
+    Vec3f& set_y(float y) { data[1] = y; return *this; }
+    Vec3f& set_z(float z) { data[2] = z; return *this; }
 
     Vec3f operator+(const Vec3f& rhs) const;
+    Vec3f operator+(float k) const;
     Vec3f operator-(const Vec3f& rhs) const;
+    Vec3f operator-(float k) const;
     Vec3f operator*(float k) const;
     Vec3f operator*(const Vec3f& rhs) const;
     Vec3f operator/(float k) const;
+    Vec3f operator%(float k) const;
 
     float len() const;
     Vec3f normalize() const;
@@ -65,6 +68,7 @@ namespace YAML {
 }
 Vec3f min(const Vec3f& lhs, const Vec3f& rhs);
 Vec3f max(const Vec3f& lhs, const Vec3f& rhs);
+Vec3f abs(const Vec3f& vec);
 
 
 #endif //SIMPLE_RAYTRACER_VECTOR3_H

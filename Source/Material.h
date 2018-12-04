@@ -27,8 +27,19 @@ public:
 
         return *this;
     }
-
     // Getters
+    inline float float_specular() const {
+        return m_specular;
+    };
+
+    inline float float_diffuse() const {
+        return m_diffuse;
+    }
+
+    inline float float_ambient() const {
+        return m_ambient;
+    }
+
     Color specular()  const {
         return Color(1.0f, 1.0f, 1.0f) * m_specular;
     }

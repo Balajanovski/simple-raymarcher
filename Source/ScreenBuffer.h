@@ -9,7 +9,7 @@
 #include "Util/Shader.h"
 #include "Screen.h"
 
-#include "Includes/glad/glad.h"
+#include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <memory>
 
