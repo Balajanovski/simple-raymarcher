@@ -22,21 +22,21 @@ void ConfigManager::load_file(const std::string &file_src) {
     auto config = YAML::LoadFile(file_src);
 
     if (!config["screen-width"]) {
-        std::runtime_error("config file syntax error: no screen-width field detected."
+        throw std::runtime_error("config file syntax error: no screen-width field detected."
                                    "\nEither the screen-width was improperly declared or is non-existent");
     }
     m_screen_width = config["screen-width"].as<int>();
 
 
     if (!config["screen-height"]) {
-        std::runtime_error("config file syntax error: no screen-height field detected."
+        throw std::runtime_error("config file syntax error: no screen-height field detected."
                                    "\nEither the screen-height was improperly declared or is non-existent");
     }
     m_screen_height = config["screen-height"].as<int>();
 
 
     if (!config["camera"]) {
-        std::runtime_error("config file syntax error: no camera field detected."
+        throw std::runtime_error("config file syntax error: no camera field detected."
                                    "\nEither the camera was improperly declared or is non-existent");
     }
     m_camera = std::make_shared<Camera>(Vec3f(config["camera"]["X"].as<float>(),
